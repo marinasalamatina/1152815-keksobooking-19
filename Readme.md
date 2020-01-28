@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Марина Саламатина](https://up.htmlacademy.ru/javascript/19/user/1152815).
-* Наставник: `Неизвестно`.
+* Наставник: [Роман Макаров](https://htmlacademy.ru/profile/deepspiral).
 
 ---
 
