@@ -10,15 +10,15 @@ var OFFER_CHECKIN = ['12:00', '13:00', '14:00'];
 var OFFER_CHECKOUT = ['12:00', '13:00', '14:00'];
 var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var OFFER_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-var MARK_MIN_Y = 130;
-var MARK_MAX_Y = 630;
+var AD_LOCATION_MIN_Y = 130;
+var AD_LOCATION_MAX_Y = 630;
 
 var offerPrice = [3000, 3500];
 var offerRooms = [1, 2, 3, 4];
 var offerGuests = [1, 2, 3, 4];
 var offerDescription = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
-var markMinX = 0;
-var markMaxX = 1200;
+var adLocationMinX = 0;
+var adLocationMaxX = 1200;
 
 var markMap = document.querySelector('#pin').content.querySelector('.map__pin');
 var markImage = document.querySelector('#pin').content.querySelector('img');
@@ -54,8 +54,8 @@ var getAdContent = function (number) {
       photos: getRandomValue(OFFER_PHOTOS)
     },
     location: {
-      x: getAdLocation(markMinX, markMaxX),
-      y: getAdLocation(MARK_MIN_Y, MARK_MAX_Y)
+      x: getAdLocation(adLocationMinX, adLocationMaxX),
+      y: getAdLocation(AD_LOCATION_MIN_Y, AD_LOCATION_MAX_Y)
     }
   };
   return adContent;
