@@ -16,10 +16,10 @@ var OFFER_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http:
 var offerMinPrice = 3000;
 var offerMaxPrice = 53000;
 var offerMinRooms = 1;
-var offerMaxRooms = 4;
+var offerMaxRooms = 8;
 var offerMinGuests = 1;
 var offerMaxGuests = 4;
-var offerDescription = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
+var offerDescriptions = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
 
 var markMap = document.querySelector('#pin').content.querySelector('.map__pin');
 var markImage = document.querySelector('#pin').content.querySelector('img');
@@ -30,6 +30,23 @@ var getRandomNumber = function (array) {
 
 var getRandomNumberInterval = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
+};
+
+var mixArray = function (array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = getRandomNumber(array);
+    var temp = array[j];
+    array[j] = array[i];
+    array[i] = temp;
+  }
+  return array;
+};
+
+var getRandomArray = function (dataProvide) {
+  var dataProvideMix = mixArray(dataProvide);
+  var dataProvideNewLenght = getRandomNumber(dataProvide);
+  var dataProvideNewArray = dataProvideMix.slice(0, dataProvideNewLenght.length);
+  return dataProvideNewArray;
 };
 
 var getAdContent = function (numberSequence) {
@@ -51,9 +68,9 @@ var getAdContent = function (numberSequence) {
       guests: getRandomNumberInterval(offerMinGuests, offerMaxGuests),
       checkin: getRandomNumber(OFFER_CHECKINS),
       checkout: getRandomNumber(OFFER_CHECKOUTS),
-      features: getRandomNumber(OFFER_FEATURES),
-      description: offerDescription[numberSequence],
-      photos: getRandomNumber(OFFER_PHOTOS)
+      features: getRandomArray(OFFER_FEATURES),
+      descriptions: getRandomNumber(offerDescriptions),
+      photos: getRandomArray(OFFER_PHOTOS)
     },
     location: {
       x: markPositionX,
