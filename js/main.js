@@ -1,61 +1,63 @@
 'use strict';
 
-var NUMBER_ADS = 8;
+var ADS_NUMBER = 8;
 
-var NUMBER_AVATAR = ['1', '2', '3', '4', '5', '6', '7', '8'];
-var OFFER_TITLE = ['заголовок1', 'заголовок2', 'заголовок3', 'заголовок4', 'заголовок5', 'заголовок6', 'заголовок7', 'заголовок8'];
-var OFFER_ADDRESS = ['600, 350'];
-var OFFER_TYPE = ['palace', 'flat', 'house', 'bungalo'];
-var OFFER_CHECKIN = ['12:00', '13:00', '14:00'];
-var OFFER_CHECKOUT = ['12:00', '13:00', '14:00'];
+var OFFER_TITLES = ['заголовок1', 'заголовок2', 'заголовок3', 'заголовок4', 'заголовок5', 'заголовок6', 'заголовок7', 'заголовок8'];
+var OFFER_ADDRESS_MIN_X = 0;
+var OFFER_ADDRESS_MAX_X = 1200;
+var OFFER_ADDRESS_MIN_Y = 130;
+var OFFER_ADDRESS_MAX_Y = 630;
+var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var OFFER_CHECKINS = ['12:00', '13:00', '14:00'];
+var OFFER_CHECKOUTS = ['12:00', '13:00', '14:00'];
 var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var OFFER_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-var AD_LOCATION_MIN_Y = 130;
-var AD_LOCATION_MAX_Y = 630;
 
-var offerPrice = [3000, 3500];
-var offerRooms = [1, 2, 3, 4];
-var offerGuests = [1, 2, 3, 4];
+var offerMinPrice = 3000;
+var offerMaxPrice = 53000;
+var offerMinRooms = 1;
+var offerMaxRooms = 4;
+var offerMinGuests = 1;
+var offerMaxGuests = 4;
 var offerDescription = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
-var adLocationMinX = 0;
-var adLocationMaxX = 1200;
 
 var markMap = document.querySelector('#pin').content.querySelector('.map__pin');
 var markImage = document.querySelector('#pin').content.querySelector('img');
 
 var getRandomNumber = function (array) {
-  return Math.round(Math.random() * (array.length - 1));
+  return Math.round(Math.random() * (array.length));
 };
 
-var getRandomValue = function (array) {
-  return array[getRandomNumber(array)];
+var getRandomNumberInterval = function (min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
 };
 
-var getAdLocation = function (min, max) {
-  return Math.random() * (max - min) + min;
-};
+var getAdContent = function (numberSequence) {
+  var adressPositionX = getRandomNumberInterval(OFFER_ADDRESS_MIN_X, OFFER_ADDRESS_MAX_X);
+  var adressPositionY = getRandomNumberInterval(OFFER_ADDRESS_MIN_Y, OFFER_ADDRESS_MAX_Y);
+  var markPositionX = adressPositionX - markImage.width / 2;
+  var markPositionY = adressPositionY - markImage.height;
 
-var getAdContent = function (number) {
   var adContent = {
     author: {
-      avatar: 'img/avatars/user0' + NUMBER_AVATAR[number] + '.png'
+      avatar: 'img/avatars/user0' + numberSequence + '.png'
     },
     offer: {
-      title: OFFER_TITLE[number],
-      address: OFFER_ADDRESS[number],
-      price: offerPrice[number],
-      type: getRandomValue(OFFER_TYPE),
-      rooms: offerRooms[number],
-      guests: offerGuests[number],
-      checkin: getRandomValue(OFFER_CHECKIN),
-      checkout: getRandomValue(OFFER_CHECKOUT),
-      features: getRandomValue(OFFER_FEATURES),
-      description: offerDescription[number],
-      photos: getRandomValue(OFFER_PHOTOS)
+      title: OFFER_TITLES[numberSequence],
+      address: adressPositionX + ',' + ' ' + adressPositionY,
+      price: getRandomNumberInterval(offerMinPrice, offerMaxPrice),
+      type: getRandomNumber(OFFER_TYPES),
+      rooms: getRandomNumberInterval(offerMinRooms, offerMaxRooms),
+      guests: getRandomNumberInterval(offerMinGuests, offerMaxGuests),
+      checkin: getRandomNumber(OFFER_CHECKINS),
+      checkout: getRandomNumber(OFFER_CHECKOUTS),
+      features: getRandomNumber(OFFER_FEATURES),
+      description: offerDescription[numberSequence],
+      photos: getRandomNumber(OFFER_PHOTOS)
     },
     location: {
-      x: getAdLocation(adLocationMinX, adLocationMaxX),
-      y: getAdLocation(AD_LOCATION_MIN_Y, AD_LOCATION_MAX_Y)
+      x: markPositionX,
+      y: markPositionY
     }
   };
   return adContent;
@@ -63,7 +65,7 @@ var getAdContent = function (number) {
 
 var getAdsContent = function () {
   var adsContent = [];
-  for (var i = 0; i < NUMBER_ADS; i += 1) {
+  for (var i = 0; i < ADS_NUMBER; i += 1) {
     adsContent.push(getAdContent(i));
   }
   return adsContent;
@@ -80,15 +82,15 @@ var createMark = function (adContent) {
   return mark;
 };
 
-var createContainerForMarks = function (adsContent) {
-  var conainerForMarks = document.createDocumentFragment();
+var createMarks = function (adsContent) {
+  var marks = document.createDocumentFragment();
   adsContent = getAdsContent();
 
   for (var i = 0; i < adsContent.length; i++) {
-    conainerForMarks.appendChild(createMark(adsContent[i]));
+    marks.appendChild(createMark(adsContent[i]));
   }
-  return conainerForMarks;
+  return marks;
 };
 
 document.querySelector('.map').classList.remove('map--faded');
-document.querySelector('.map__pins').appendChild(createContainerForMarks());
+document.querySelector('.map__pins').appendChild(createMarks());
