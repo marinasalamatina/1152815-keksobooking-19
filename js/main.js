@@ -21,8 +21,9 @@ var OFFER_MIN_GUESTS = 1;
 var OFFER_MAX_GUESTS = 4;
 var OFFER_DESCRIPTIONS = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
 
-var IMAGE_WIDTH = document.querySelector('#pin').content.querySelector('img').width;
-var IMAGE_HEIGHT = document.querySelector('#pin').content.querySelector('img').height;
+var rect = document.querySelector('.map__pin').querySelector('img').getBoundingClientRect();
+var IMAGE_WIDTH = rect.width;
+var IMAGE_HEIGHT = rect.height;
 
 var markMap = document.querySelector('#pin').content.querySelector('.map__pin');
 var markImage = document.querySelector('#pin').content.querySelector('img');
@@ -60,7 +61,7 @@ var getAdContent = function (adNumber) {
       avatar: 'img/avatars/user0' + adNumber + '.png'
     },
     offer: {
-      title: OFFER_TITLES[adNumber],
+      title: getRandomElement(OFFER_TITLES),
       address: adressPositionX + ',' + ' ' + adressPositionY,
       price: getRandomNumber(OFFER_MIN_PRICE, OFFER_MAX_PRICE),
       type: getRandomElement(OFFER_TYPES),
@@ -82,7 +83,7 @@ var getAdContent = function (adNumber) {
 
 var getAdsContent = function () {
   var adsContent = [];
-  for (var i = 0; i < ADS_NUMBER; i += 1) {
+  for (var i = 1; i <= ADS_NUMBER; i += 1) {
     adsContent.push(getAdContent(i));
   }
   return adsContent;
