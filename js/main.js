@@ -25,7 +25,7 @@ var markMap = document.querySelector('#pin').content.querySelector('.map__pin');
 var markImage = document.querySelector('#pin').content.querySelector('img');
 
 var getRandomNumber = function (array) {
-  return Math.round(Math.random() * (array.length));
+  return Math.round(Math.random() * (array.length - 1));
 };
 
 var getRandomElement = function (array) {
@@ -52,7 +52,7 @@ var getRandomArray = function (array) {
   return dataProvideMix.slice(0, elementsCount);
 };
 
-var getAdContent = function (numberSequence) {
+var getAdContent = function (adNumber) {
   var adressPositionX = getRandomNumberInterval(OFFER_ADDRESS_MIN_X, OFFER_ADDRESS_MAX_X);
   var adressPositionY = getRandomNumberInterval(OFFER_ADDRESS_MIN_Y, OFFER_ADDRESS_MAX_Y);
   var markPositionX = adressPositionX - markImage.width / 2;
@@ -60,10 +60,10 @@ var getAdContent = function (numberSequence) {
 
   var adContent = {
     author: {
-      avatar: 'img/avatars/user0' + numberSequence + '.png'
+      avatar: 'img/avatars/user0' + adNumber + '.png'
     },
     offer: {
-      title: OFFER_TITLES[numberSequence],
+      title: OFFER_TITLES[adNumber],
       address: adressPositionX + ',' + ' ' + adressPositionY,
       price: getRandomNumberInterval(OFFER_MIN_PRICE, OFFER_MAX_PRICE),
       type: getRandomElement(OFFER_TYPES),
@@ -88,7 +88,6 @@ var getAdsContent = function () {
   for (var i = 0; i < ADS_NUMBER; i += 1) {
     adsContent.push(getAdContent(i));
   }
-  console.log(adsContent);
   return adsContent;
 };
 
