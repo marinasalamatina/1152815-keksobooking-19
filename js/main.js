@@ -58,8 +58,6 @@ var getRandomArray = function (array) {
 var getAdContent = function (adNumber) {
   var adressPositionX = getRandomNumberInterval(OFFER_ADDRESS_MIN_X, OFFER_ADDRESS_MAX_X);
   var adressPositionY = getRandomNumberInterval(OFFER_ADDRESS_MIN_Y, OFFER_ADDRESS_MAX_Y);
-  var markPositionX = adressPositionX - IMAGE_WIDTH / 2;
-  var markPositionY = adressPositionY - IMAGE_HEIGHT;
 
   var adContent = {
     author: {
@@ -79,8 +77,8 @@ var getAdContent = function (adNumber) {
       photos: getRandomArray(OFFER_PHOTOS)
     },
     location: {
-      x: markPositionX,
-      y: markPositionY
+      x: adressPositionX,
+      y: adressPositionY
     }
   };
   return adContent;
@@ -96,8 +94,8 @@ var getAdsContent = function () {
 
 var createMark = function (adContent) {
   var mark = markMap.cloneNode(true);
-  var markLocationLeft = adContent.location.x + 'px';
-  var markLocationTop = adContent.location.y + 'px';
+  var markLocationLeft = adContent.location.x - IMAGE_WIDTH / 2 + 'px';
+  var markLocationTop = adContent.location.y - IMAGE_HEIGHT + 'px';
 
   mark.style.left = markLocationLeft;
   mark.style.top = markLocationTop;
