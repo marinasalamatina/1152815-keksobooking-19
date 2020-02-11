@@ -27,21 +27,17 @@ var IMAGE_HEIGHT = document.querySelector('#pin').content.querySelector('img').h
 var markMap = document.querySelector('#pin').content.querySelector('.map__pin');
 var markImage = document.querySelector('#pin').content.querySelector('img');
 
-var getRandomNumber = function (array) {
-  return Math.round(Math.random() * (array.length - 1));
+var getRandomNumber = function (min, max) {
+  return Math.round(Math.random() * (max - min)) + min;
 };
 
 var getRandomElement = function (array) {
-  return array[getRandomNumber(array)];
+  return array[getRandomNumber(0, array.length - 1)];
 };
 
-var getRandomNumberInterval = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-};
-
-var mixedArray = function (array) {
+var mixArray = function (array) {
   for (var i = array.length - 1; i > 0; i -= 1) {
-    var j = getRandomNumber(array);
+    var j = getRandomNumber(0, array.length - 1);
     var temp = array[j];
     array[j] = array[i];
     array[i] = temp;
@@ -50,14 +46,14 @@ var mixedArray = function (array) {
 };
 
 var getRandomArray = function (array) {
-  var dataProvideMix = mixedArray(array);
-  var elementsCount = getRandomNumber(array);
-  return dataProvideMix.slice(0, elementsCount);
+  var mixedArray = mixArray(array);
+  var elementsCount = getRandomNumber(0, array.length - 1);
+  return mixedArray.slice(0, elementsCount);
 };
 
 var getAdContent = function (adNumber) {
-  var adressPositionX = getRandomNumberInterval(OFFER_ADDRESS_MIN_X, OFFER_ADDRESS_MAX_X);
-  var adressPositionY = getRandomNumberInterval(OFFER_ADDRESS_MIN_Y, OFFER_ADDRESS_MAX_Y);
+  var adressPositionX = getRandomNumber(OFFER_ADDRESS_MIN_X, OFFER_ADDRESS_MAX_X);
+  var adressPositionY = getRandomNumber(OFFER_ADDRESS_MIN_Y, OFFER_ADDRESS_MAX_Y);
 
   var adContent = {
     author: {
@@ -66,10 +62,10 @@ var getAdContent = function (adNumber) {
     offer: {
       title: OFFER_TITLES[adNumber],
       address: adressPositionX + ',' + ' ' + adressPositionY,
-      price: getRandomNumberInterval(OFFER_MIN_PRICE, OFFER_MAX_PRICE),
+      price: getRandomNumber(OFFER_MIN_PRICE, OFFER_MAX_PRICE),
       type: getRandomElement(OFFER_TYPES),
-      rooms: getRandomNumberInterval(OFFER_MIN_ROOMS, OFFER_MAX_ROOMS),
-      guests: getRandomNumberInterval(OFFER_MIN_GUESTS, OFFER_MAX_GUESTS),
+      rooms: getRandomNumber(OFFER_MIN_ROOMS, OFFER_MAX_ROOMS),
+      guests: getRandomNumber(OFFER_MIN_GUESTS, OFFER_MAX_GUESTS),
       checkin: getRandomElement(OFFER_CHECKINS),
       checkout: getRandomElement(OFFER_CHECKOUTS),
       features: getRandomArray(OFFER_FEATURES),
