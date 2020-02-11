@@ -28,6 +28,10 @@ var getRandomNumber = function (array) {
   return Math.round(Math.random() * (array.length));
 };
 
+var getRandomElement = function (array) {
+  return array[getRandomNumber(array)];
+};
+
 var getRandomNumberInterval = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
@@ -63,14 +67,14 @@ var getAdContent = function (numberSequence) {
       title: OFFER_TITLES[numberSequence],
       address: adressPositionX + ',' + ' ' + adressPositionY,
       price: getRandomNumberInterval(OFFER_MIN_PRICE, OFFER_MAX_PRICE),
-      type: getRandomNumber(OFFER_TYPES),
+      type: getRandomElement(OFFER_TYPES),
       rooms: getRandomNumberInterval(OFFER_MIN_ROOMS, OFFER_MAX_ROOMS),
       guests: getRandomNumberInterval(OFFER_MIN_GUESTS, OFFER_MAX_GUESTS),
-      checkin: getRandomNumber(OFFER_CHECKINS),
-      checkout: getRandomNumber(OFFER_CHECKOUTS),
+      checkin: getRandomElement(OFFER_CHECKINS),
+      checkout: getRandomElement(OFFER_CHECKOUTS),
       features: getRandomArray(OFFER_FEATURES),
-      descriptions: getRandomNumber(OFFER_DESCRIPTIONS),
-      photos: getRandomArray(OFFER_PHOTOS)
+      descriptions: getRandomElement(OFFER_DESCRIPTIONS),
+      photos: getRandomElement(OFFER_PHOTOS)
     },
     location: {
       x: markPositionX,
