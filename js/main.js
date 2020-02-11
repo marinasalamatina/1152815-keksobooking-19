@@ -36,8 +36,8 @@ var getRandomNumberInterval = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-var mixArray = function (array) {
-  for (var i = array.length - 1; i > 0; i--) {
+var mixedArray = function (array) {
+  for (var i = array.length - 1; i > 0; i -= 1) {
     var j = getRandomNumber(array);
     var temp = array[j];
     array[j] = array[i];
@@ -46,11 +46,10 @@ var mixArray = function (array) {
   return array;
 };
 
-var getRandomArray = function (dataProvide) {
-  var dataProvideMix = mixArray(dataProvide);
-  var dataProvideNewLenght = getRandomNumber(dataProvide);
-  var dataProvideNewArray = dataProvideMix.slice(0, dataProvideNewLenght.length);
-  return dataProvideNewArray;
+var getRandomArray = function (array) {
+  var dataProvideMix = mixedArray(array);
+  var elementsCount = getRandomNumber(array);
+  return dataProvideMix.slice(0, elementsCount);
 };
 
 var getAdContent = function (numberSequence) {
@@ -74,7 +73,7 @@ var getAdContent = function (numberSequence) {
       checkout: getRandomElement(OFFER_CHECKOUTS),
       features: getRandomArray(OFFER_FEATURES),
       descriptions: getRandomElement(OFFER_DESCRIPTIONS),
-      photos: getRandomElement(OFFER_PHOTOS)
+      photos: getRandomArray(OFFER_PHOTOS)
     },
     location: {
       x: markPositionX,
@@ -89,6 +88,7 @@ var getAdsContent = function () {
   for (var i = 0; i < ADS_NUMBER; i += 1) {
     adsContent.push(getAdContent(i));
   }
+  console.log(adsContent);
   return adsContent;
 };
 
