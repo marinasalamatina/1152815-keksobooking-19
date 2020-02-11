@@ -111,7 +111,7 @@ var createMarks = function (adsContent) {
   var marks = document.createDocumentFragment();
   adsContent = getAdsContent();
 
-  for (var i = 0; i < adsContent.length; i++) {
+  for (var i = 0; i < adsContent.length; i += 1) {
     marks.appendChild(createMark(adsContent[i]));
   }
   return marks;
