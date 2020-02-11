@@ -21,6 +21,9 @@ var OFFER_MIN_GUESTS = 1;
 var OFFER_MAX_GUESTS = 4;
 var OFFER_DESCRIPTIONS = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
 
+var IMAGE_WIDTH = document.querySelector('#pin').content.querySelector('img').width;
+var IMAGE_HEIGHT = document.querySelector('#pin').content.querySelector('img').height;
+
 var markMap = document.querySelector('#pin').content.querySelector('.map__pin');
 var markImage = document.querySelector('#pin').content.querySelector('img');
 
@@ -92,8 +95,8 @@ var getAdsContent = function () {
 var createMark = function (adContent) {
   var mark = markMap.cloneNode(true);
 
-  mark.style.left = adContent.location.x - markImage.width / 2 + 'px';
-  mark.style.top = adContent.location.y - markImage.height + 'px';
+  mark.style.left = adContent.location.x - IMAGE_WIDTH / 2 + 'px';
+  mark.style.top = adContent.location.y - IMAGE_HEIGHT + 'px';
   markImage.src = adContent.author.avatar;
   markImage.alt = adContent.offer.title;
 
