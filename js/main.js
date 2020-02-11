@@ -13,13 +13,13 @@ var OFFER_CHECKOUTS = ['12:00', '13:00', '14:00'];
 var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var OFFER_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
-var offerMinPrice = 3000;
-var offerMaxPrice = 53000;
-var offerMinRooms = 1;
-var offerMaxRooms = 8;
-var offerMinGuests = 1;
-var offerMaxGuests = 4;
-var offerDescriptions = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
+var OFFER_MIN_PRICE = 3000;
+var OFFER_MAX_PRICE = 53000;
+var OFFER_MIN_ROOMS = 1;
+var OFFER_MAX_ROOMS = 8;
+var OFFER_MIN_GUESTS = 1;
+var OFFER_MAX_GUESTS = 4;
+var OFFER_DESCRIPTIONS = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
 
 var markMap = document.querySelector('#pin').content.querySelector('.map__pin');
 var markImage = document.querySelector('#pin').content.querySelector('img');
@@ -62,14 +62,14 @@ var getAdContent = function (numberSequence) {
     offer: {
       title: OFFER_TITLES[numberSequence],
       address: adressPositionX + ',' + ' ' + adressPositionY,
-      price: getRandomNumberInterval(offerMinPrice, offerMaxPrice),
+      price: getRandomNumberInterval(OFFER_MIN_PRICE, OFFER_MAX_PRICE),
       type: getRandomNumber(OFFER_TYPES),
-      rooms: getRandomNumberInterval(offerMinRooms, offerMaxRooms),
-      guests: getRandomNumberInterval(offerMinGuests, offerMaxGuests),
+      rooms: getRandomNumberInterval(OFFER_MIN_ROOMS, OFFER_MAX_ROOMS),
+      guests: getRandomNumberInterval(OFFER_MIN_GUESTS, OFFER_MAX_GUESTS),
       checkin: getRandomNumber(OFFER_CHECKINS),
       checkout: getRandomNumber(OFFER_CHECKOUTS),
       features: getRandomArray(OFFER_FEATURES),
-      descriptions: getRandomNumber(offerDescriptions),
+      descriptions: getRandomNumber(OFFER_DESCRIPTIONS),
       photos: getRandomArray(OFFER_PHOTOS)
     },
     location: {
