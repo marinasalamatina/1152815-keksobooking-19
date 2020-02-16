@@ -1,7 +1,6 @@
 'use strict';
 
 var ADS_NUMBER = 8;
-
 var OFFER_TITLES = ['заголовок1', 'заголовок2', 'заголовок3', 'заголовок4', 'заголовок5', 'заголовок6', 'заголовок7', 'заголовок8'];
 var OFFER_ADDRESS_MIN_X = 0;
 var OFFER_ADDRESS_MAX_X = 1200;
