@@ -122,6 +122,20 @@ var createMarks = function (adsContent) {
   return marks;
 };
 
+
+var getFeatures = function (features) {
+  var featuresListFragment = document.createElement('ul');
+  featuresListFragment.classList.add('popup__features');
+
+  for (var i = 0; i < features.length; i++) {
+    var featuresItemFragment = document.createElement('li');
+    featuresItemFragment.classList.add('popup__feature');
+    featuresItemFragment.classList.add('popup__feature--' + features[i]);
+    featuresListFragment.appendChild(featuresItemFragment);
+  }
+  return featuresListFragment;
+};
+
 var getPhotos = function (template, photos) {
   var photosFragment = document.createDocumentFragment();
 
@@ -135,11 +149,14 @@ var getPhotos = function (template, photos) {
 
 var createCard = function (adContent) {
   var card = mapCard.cloneNode(true);
-  var imgFromTemplate = card.querySelector('.popup__photos').querySelector('img');
   var priceNight = adContent.offer.price + '₽/ночь';
   var capacityRoomsGuests = adContent.offer.rooms + ' комнаты для ' + adContent.offer.guests + ' гостей';
+  var popupDescription = card.querySelector('.popup__description');
   var timesCheckinCheckout = 'Заезд после ' + adContent.offer.checkin + ', выезд до ' + adContent.offer.checkout;
-  var photos = getPhotos(imgFromTemplate, adContent.offer.photos);
+  var popupFeatures = card.querySelector('.popup__features');
+  var features = getFeatures(adContent.offer.features);
+  var imageFromTemplate = card.querySelector('.popup__photos').querySelector('img');
+  var photos = getPhotos(imageFromTemplate, adContent.offer.photos);
 
   card.querySelector('.popup__title').textContent = adContent.offer.title;
   card.querySelector('.popup__text--address').textContent = adContent.offer.address;
@@ -147,9 +164,10 @@ var createCard = function (adContent) {
   card.querySelector('.popup__type').textContent = offerTypeList[adContent.offer.type];
   card.querySelector('.popup__text--capacity').textContent = capacityRoomsGuests;
   card.querySelector('.popup__text--time').textContent = timesCheckinCheckout;
-  card.querySelector('.popup__features').textContent = adContent.offer.features;
-  card.querySelector('.popup__description').textContent = adContent.offer.description;
-  card.querySelector('.popup__photos').replaceChild(photos, imgFromTemplate);
+  card.removeChild(popupFeatures);
+  card.insertBefore(features, popupDescription);
+  popupDescription.textContent = adContent.offer.description;
+  card.querySelector('.popup__photos').replaceChild(photos, imageFromTemplate);
   card.querySelector('.popup__avatar').src = adContent.author.avatar;
 
   return card;
