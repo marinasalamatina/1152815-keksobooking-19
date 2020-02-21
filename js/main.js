@@ -55,6 +55,13 @@ var minPriceForTypeList = {
   'palace': 10000
 };
 
+var validRoomsGuests = {
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0']
+};
+
 var getRandomNumber = function (min, max) {
   return Math.round(Math.random() * (max - min)) + min;
 };
@@ -215,15 +222,12 @@ var setCards = function () {
 var noActiveMap = function () {
   map.classList.add('map--faded');
   adForm.classList.add('ad-form--disabled');
+  disableElements(adFormFieldsets);
 
   getAdFormAddress();
 
-  mapPinMain.addEventListener('mousedown', mapPinMainMousedown);
-  mapPinMain.addEventListener('keydown', mainPinEnterKeydown);
-  mapPinMain.addEventListener('mousedown', getAdFormAddress);
-  mapPinMain.addEventListener('keydown', getAdFormAddress);
-
-  disableElements(adFormFieldsets);
+  mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
+  mapPinMain.addEventListener('keydown', onMapPinMainEnterKeydown);
 };
 
 var disableElements = function (array) {
@@ -232,22 +236,23 @@ var disableElements = function (array) {
   }
 };
 
-var noDisableElements = function (array) {
+var enableElements = function (array) {
   for (var i = 0; i < array.length; i += 1) {
     array[i].removeAttribute('disabled');
   }
 };
 
-
-var mapPinMainMousedown = (function (evt) {
+var onMapPinMainMousedown = (function (evt) {
   evt.preventDefault();
   if (evt.button === 0) {
+    getAdFormAddress();
     activeMap();
   }
 });
 
-var mainPinEnterKeydown = function (evt) {
+var onMapPinMainEnterKeydown = function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
+    getAdFormAddress();
     activeMap();
   }
 };
@@ -255,31 +260,29 @@ var mainPinEnterKeydown = function (evt) {
 var activeMap = function () {
   setCards();
 
+  mapPinMain.removeEventListener('keydown', onMapPinMainEnterKeydown);
+  mapPinMain.removeEventListener('mousedown', onMapPinMainMousedown);
+
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
+  enableElements(adFormFieldsets);
 
   adFormAddress.setAttribute('readonly', '');
-  adFormCapacity.addEventListener('change', adFormRoomsChange);
-  adFormRooms.addEventListener('change', adFormRoomsChange);
-  adFormType.addEventListener('change', adFormTypeChange);
-  adFormPrice.addEventListener('change', adFormTypeChange);
+
+  onRoomsOrGuestsChange();
+  adFormRooms.addEventListener('change', onRoomsOrGuestsChange);
+  adFormCapacity.addEventListener('change', onRoomsOrGuestsChange);
+
+  adFormType.addEventListener('change', onTypeChange);
+  adFormPrice.addEventListener('change', onTypeChange);
 
   getAdFormAddress();
-
-  mapPinMain.removeEventListener('keydown', mainPinEnterKeydown);
-  mapPinMain.removeEventListener('mousedown', mapPinMainMousedown);
-  mapPinMain.removeEventListener('mousedown', getAdFormAddress);
-  mapPinMain.removeEventListener('keydown', getAdFormAddress);
-
-  noDisableElements(adFormFieldsets);
 };
 
-var adFormRoomsChange = function () {
-  var rooms = adFormRooms.value;
-  var guests = adFormCapacity.value;
-
-  var validityMessage = (guests > rooms) ? 'Нужно выбрать больше комнат или уменьшить число гостей' : '';
-
+var onRoomsOrGuestsChange = function () {
+  var guestCapacity = adFormCapacity.querySelector('option:checked');
+  var roomCapacity = validRoomsGuests[adFormRooms.querySelector('option:checked').value];
+  var validityMessage = roomCapacity.includes(guestCapacity.value) ? '' : 'Нужно выбрать больше комнат или изменить число гостей';
   adFormCapacity.setCustomValidity(validityMessage);
 };
 
@@ -297,9 +300,10 @@ var getAdFormAddress = function () {
   adFormAddress.value = mapPinCoordinates;
 };
 
-var adFormTypeChange = function () {
+var onTypeChange = function () {
   var minPrice = minPriceForTypeList[adFormType.value];
   adFormPrice.placeholder = minPrice;
+  adFormPrice.minlength = minPrice;
 
   var validityMessage = (adFormPrice.value < minPrice) ? 'Рекомендуемая цена за ночь от ' + minPrice + ' до ' + MAX_PRICENIGHT : '';
 
