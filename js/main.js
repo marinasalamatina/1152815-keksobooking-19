@@ -257,6 +257,17 @@ var onMapPinMainEnterKeydown = function (evt) {
   }
 };
 
+var adFormTimeout = adForm.querySelector('#timeout');
+var adFormTimein = adForm.querySelector('#timein');
+
+var onAdFormCheckInChange = function (evt) {
+  adFormTimeout.value = evt.currentTarget.value;
+};
+
+var onAdFormCheckOutChange = function (evt) {
+  adFormTimein.value = evt.currentTarget.value;
+};
+
 var activeMap = function () {
   setCards();
 
@@ -268,6 +279,14 @@ var activeMap = function () {
   enableElements(adFormFieldsets);
 
   adFormAddress.setAttribute('readonly', '');
+
+  adFormTimein.addEventListener('change', function () {
+    onAdFormCheckInChange(window.event);
+  });
+
+  adFormTimeout.addEventListener('change', function () {
+    onAdFormCheckOutChange(window.event);
+  });
 
   onRoomsOrGuestsChange();
   adFormRooms.addEventListener('change', onRoomsOrGuestsChange);
