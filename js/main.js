@@ -44,17 +44,22 @@ var adFormTimein = adForm.querySelector('#timein');
 var mapCard = document.querySelector('#card').content.querySelector('.map__card');
 
 var offerTypeList = {
-  'bungalo': 'Бунгало',
-  'flat': 'Квартира',
-  'house': 'Дом',
-  'palace': 'Дворец'
-};
-
-var minPriceForTypeList = {
-  'bungalo': 0,
-  'flat': 1000,
-  'house': 5000,
-  'palace': 10000
+  'bungalo': {
+    name: 'Бунгало',
+    price: 0
+  },
+  'flat': {
+    name: 'Квартира',
+    price: 1000
+  },
+  'house': {
+    name: 'Дом',
+    price: 5000
+  },
+  'palace': {
+    name: 'Дворец',
+    price: 10000
+  }
 };
 
 var validRoomsGuests = {
@@ -187,11 +192,12 @@ var createCard = function (adContent) {
   var features = getFeatures(adContent.offer.features);
   var imageFromTemplate = card.querySelector('.popup__photos').querySelector('img');
   var photos = getPhotos(imageFromTemplate, adContent.offer.photos);
+  var type = offerTypeList[adContent.offer.type].name;
 
   card.querySelector('.popup__title').textContent = adContent.offer.title;
   card.querySelector('.popup__text--address').textContent = adContent.offer.address;
   card.querySelector('.popup__text--price').textContent = priceNight;
-  card.querySelector('.popup__type').textContent = offerTypeList[adContent.offer.type];
+  card.querySelector('.popup__type').textContent = type;
   card.querySelector('.popup__text--capacity').textContent = capacityRoomsGuests;
   card.querySelector('.popup__text--time').textContent = timesCheckinCheckout;
   card.removeChild(popupFeatures);
@@ -199,7 +205,6 @@ var createCard = function (adContent) {
   popupDescription.textContent = adContent.offer.description;
   card.querySelector('.popup__photos').replaceChild(photos, imageFromTemplate);
   card.querySelector('.popup__avatar').src = adContent.author.avatar;
-
   return card;
 };
 
@@ -278,7 +283,7 @@ var onRoomsOrGuestsChange = function () {
 };
 
 var onTypeChange = function () {
-  var minPrice = minPriceForTypeList[adFormType.value];
+  var minPrice = offerTypeList[adFormType.value].price;
   adFormPrice.placeholder = minPrice;
   adFormPrice.minlength = minPrice;
 
