@@ -20,7 +20,8 @@ var OFFER_MIN_GUESTS = 1;
 var OFFER_MAX_GUESTS = 4;
 var OFFER_DESCRIPTIONS = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
 
-var ENTER_KEYCODE = 13;
+var ENTER_KEY = 13;
+var LEFT_BUTTON_MOUSE = 0;
 var MAX_PRICENIGHT = 1000000;
 
 var map = document.querySelector('.map');
@@ -254,14 +255,14 @@ var getMapPinCoordinates = function () {
 
 var onMapPinMainMousedown = (function (evt) {
   evt.preventDefault();
-  if (evt.button === 0) {
+  if (evt.button === LEFT_BUTTON_MOUSE) {
     getMapPinCoordinates();
     activeMap();
   }
 });
 
 var onMapPinMainEnterKeydown = function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
+  if (evt.key === ENTER_KEY) {
     getMapPinCoordinates();
     activeMap();
   }
