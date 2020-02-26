@@ -52,8 +52,8 @@ var adFormType = adForm.querySelector('#type');
 var adFormPrice = adForm.querySelector('#price');
 var adFormCapacity = adForm.querySelector('#capacity');
 var adFormFieldsets = adForm.querySelectorAll('fieldset');
-var adFormTimeout = adForm.querySelector('#timeout');
-var adFormTimein = adForm.querySelector('#timein');
+var adFormCheckout = adForm.querySelector('#timeout');
+var adFormCheckin = adForm.querySelector('#timein');
 
 var mapCard = document.querySelector('#card').content.querySelector('.map__card');
 
@@ -239,22 +239,22 @@ var setCards = function () {
 var onMapPinMainMousedown = (function (evt) {
   evt.preventDefault();
   if (evt.button === LEFT_BUTTON_MOUSE) {
-    activeMap();
+    activateMap();
   }
 });
 
 var onMapPinMainEnterKeydown = function (evt) {
   if (evt.key === ENTER_KEY) {
-    activeMap();
+    activateMap();
   }
 };
 
 var onCheckInChange = function (evt) {
-  adFormTimeout.value = evt.currentTarget.value;
+  adFormCheckout.value = evt.currentTarget.value;
 };
 
 var onCheckOutChange = function (evt) {
-  adFormTimein.value = evt.currentTarget.value;
+  adFormCheckin.value = evt.currentTarget.value;
 };
 
 var onRoomsOrGuestsChange = function () {
@@ -287,7 +287,7 @@ var noActiveMap = function () {
   adFormAddress.value = mapPinCoordinates;
 };
 
-var activeMap = function () {
+var activateMap = function () {
   setCards();
 
   mapPinMain.removeEventListener('keydown', onMapPinMainEnterKeydown);
@@ -302,11 +302,11 @@ var activeMap = function () {
   adFormAddress.setAttribute('readonly', '');
   adFormAddress.value = mapPinCoordinates;
 
-  adFormTimein.addEventListener('change', function () {
+  adFormCheckin.addEventListener('change', function () {
     onCheckInChange(window.event);
   });
 
-  adFormTimeout.addEventListener('change', function () {
+  adFormCheckout.addEventListener('change', function () {
     onCheckOutChange(window.event);
   });
 
