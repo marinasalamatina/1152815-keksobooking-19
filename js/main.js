@@ -76,13 +76,6 @@ var offerTypeList = {
   }
 };
 
-var validRoomsGuests = {
-  1: ['1'],
-  2: ['1', '2'],
-  3: ['1', '2', '3'],
-  100: ['0']
-};
-
 var getRandomNumber = function (min, max) {
   return Math.round(Math.random() * (max - min)) + min;
 };
@@ -249,22 +242,15 @@ var onMapPinMainEnterKeydown = function (evt) {
   }
 };
 
-var onCheckInChange = function (evt) {
+var onCheckInInputChange = function (evt) {
   adFormCheckout.value = evt.currentTarget.value;
 };
 
-var onCheckOutChange = function (evt) {
+var onCheckOutInputChange = function (evt) {
   adFormCheckin.value = evt.currentTarget.value;
 };
 
-var onRoomsOrGuestsChange = function () {
-  var guestCapacity = adFormCapacity.querySelector('option:checked');
-  var roomCapacity = validRoomsGuests[adFormRooms.querySelector('option:checked').value];
-  var validityMessage = roomCapacity.includes(guestCapacity.value) ? '' : 'Нужно выбрать больше комнат или изменить число гостей';
-  adFormCapacity.setCustomValidity(validityMessage);
-};
-
-var onTypeChange = function () {
+var onTypeInputChange = function () {
   var minPrice = offerTypeList[adFormType.value].price;
   adFormPrice.placeholder = minPrice;
   adFormPrice.minlength = minPrice;
@@ -272,6 +258,13 @@ var onTypeChange = function () {
   var validityMessage = (adFormPrice.value < minPrice) ? 'Рекомендуемая цена за ночь от ' + minPrice + ' до ' + MAX_PRICENIGHT : '';
 
   adFormPrice.setCustomValidity(validityMessage);
+};
+
+var checkCapacityValueValidity = function () {
+  var rooms = adFormRooms.value;
+  var guests = adFormCapacity.value;
+  var validityMessage = (guests > rooms) || ((guests === 0) !== (rooms === 100)) ? 'Нужно выбрать больше комнат или изменить число гостей' : '';
+  adFormCapacity.setCustomValidity(validityMessage);
 };
 
 var deactivateMap = function () {
@@ -303,19 +296,19 @@ var activateMap = function () {
   adFormAddress.value = mapPinCoordinates;
 
   adFormCheckin.addEventListener('change', function () {
-    onCheckInChange(window.event);
+    onCheckInInputChange(window.event);
   });
 
   adFormCheckout.addEventListener('change', function () {
-    onCheckOutChange(window.event);
+    onCheckOutInputChange(window.event);
   });
 
-  onRoomsOrGuestsChange();
-  adFormRooms.addEventListener('change', onRoomsOrGuestsChange);
-  adFormCapacity.addEventListener('change', onRoomsOrGuestsChange);
+  checkCapacityValueValidity();
+  adFormRooms.addEventListener('change', checkCapacityValueValidity);
+  adFormCapacity.addEventListener('change', checkCapacityValueValidity);
 
-  adFormType.addEventListener('change', onTypeChange);
-  adFormPrice.addEventListener('change', onTypeChange);
+  adFormType.addEventListener('change', onTypeInputChange);
+  adFormPrice.addEventListener('change', onTypeInputChange);
 };
 
 deactivateMap();
