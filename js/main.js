@@ -261,9 +261,9 @@ var onTypeInputChange = function () {
 };
 
 var checkCapacityValueValidity = function () {
-  var rooms = adFormRooms.value;
-  var guests = adFormCapacity.value;
-  var validityMessage = (guests > rooms) || (guests === 0) !== (rooms === 100) ? 'Нужно выбрать больше комнат или изменить число гостей' : '';
+  var rooms = +adFormRooms.value;
+  var guests = +adFormCapacity.value;
+  var validityMessage = (guests > rooms) || ((guests === 0) !== (rooms === 100)) ? 'Нужно выбрать больше комнат или изменить число гостей' : '';
   adFormCapacity.setCustomValidity(validityMessage);
 };
 
