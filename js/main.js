@@ -274,7 +274,7 @@ var onTypeChange = function () {
   adFormPrice.setCustomValidity(validityMessage);
 };
 
-var noActiveMap = function () {
+var deactivateMap = function () {
   map.classList.add('map--faded');
   adForm.classList.add('ad-form--disabled');
   adFormFieldsets.forEach(function (fieldset) {
@@ -318,4 +318,4 @@ var activateMap = function () {
   adFormPrice.addEventListener('change', onTypeChange);
 };
 
-noActiveMap();
+deactivateMap();
