@@ -25,11 +25,12 @@ var LEFT_BUTTON_MOUSE = 0;
 var MAX_PRICENIGHT = 1000000;
 
 var map = document.querySelector('.map');
+var pin = document.querySelector('#pin');
 
-var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
+var mapPin = pin.content.querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
-var pinImage = document.querySelector('#pin').content.querySelector('img');
+var pinImage = pin.content.querySelector('img');
 var mainPinImage = mapPinMain.querySelector('img');
 
 var adForm = document.querySelector('.ad-form');
@@ -132,7 +133,7 @@ var getAdsContent = function () {
 };
 
 var createPin = function (adContent) {
-  var pin = mapPin.cloneNode(true);
+  var pinClone = mapPin.cloneNode(true);
 
   var rect = document.querySelector('.map__pin').querySelector('img').getBoundingClientRect();
   var imageWidth = rect.width;
@@ -141,12 +142,12 @@ var createPin = function (adContent) {
   var pinLocationLeft = adContent.location.x - imageWidth / 2 + 'px';
   var pinLocationTop = adContent.location.y - imageHeight + 'px';
 
-  pin.style.left = pinLocationLeft;
-  pin.style.top = pinLocationTop;
+  pinClone.style.left = pinLocationLeft;
+  pinClone.style.top = pinLocationTop;
   pinImage.src = adContent.author.avatar;
   pinImage.alt = adContent.offer.title;
 
-  return pin;
+  return pinClone;
 };
 
 var createPins = function (adsContent) {
