@@ -20,8 +20,6 @@ var OFFER_MIN_GUESTS = 1;
 var OFFER_MAX_GUESTS = 4;
 var OFFER_DESCRIPTIONS = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
 
-var ENTER_KEY = 13;
-var ESC_KEY = 27;
 var LEFT_BUTTON_MOUSE = 0;
 var MAX_PRICENIGHT = 1000000;
 
@@ -149,7 +147,7 @@ var createPin = function (adContent) {
   };
 
   var onPinCloneEnterPress = function (evt) {
-    if (evt.keyCode === ENTER_KEY) {
+    if (evt.key === 'Enter') {
       openPopup();
     }
   };
@@ -218,7 +216,7 @@ var createCard = function (adContent) {
   };
 
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEY) {
+    if (evt.key === 'Escape') {
       closePopup();
     }
   };
@@ -249,7 +247,7 @@ var onMapPinMainMousedown = function (evt) {
 };
 
 var onMapPinMainEnterKeydown = function (evt) {
-  if (evt.keyCode === ENTER_KEY) {
+  if (evt.key === 'Enter') {
     activateMap();
   }
 };
