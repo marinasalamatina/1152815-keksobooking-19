@@ -21,6 +21,7 @@ var OFFER_MAX_GUESTS = 4;
 var OFFER_DESCRIPTIONS = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5'];
 
 var ENTER_KEY = 13;
+var ESC_KEY = 27;
 var LEFT_BUTTON_MOUSE = 0;
 var MAX_PRICENIGHT = 1000000;
 
@@ -60,19 +61,19 @@ var mapCard = document.querySelector('#card').content.querySelector('.map__card'
 var offerTypeList = {
   'bungalo': {
     name: 'Бунгало',
-    price: 0
+    minPrice: 0
   },
   'flat': {
     name: 'Квартира',
-    price: 1000
+    minPrice: 1000
   },
   'house': {
     name: 'Дом',
-    price: 5000
+    minPrice: 5000
   },
   'palace': {
     name: 'Дворец',
-    price: 10000
+    minPrice: 10000
   }
 };
 
@@ -143,10 +144,23 @@ var createPin = function (adContent) {
   var pinLocationLeft = adContent.location.x - imageWidth / 2 + 'px';
   var pinLocationTop = adContent.location.y - imageHeight + 'px';
 
+  var openPopup = function () {
+    map.appendChild(createCard(adContent));
+  };
+
+  var onPinCloneEnterPress = function (evt) {
+    if (evt.keyCode === ENTER_KEY) {
+      openPopup();
+    }
+  };
+
   pinClone.style.left = pinLocationLeft;
   pinClone.style.top = pinLocationTop;
   pinImage.src = adContent.author.avatar;
   pinImage.alt = adContent.offer.title;
+
+  pinClone.addEventListener('click', openPopup);
+  pinClone.addEventListener('keydown', onPinCloneEnterPress);
 
   return pinClone;
 };
@@ -197,6 +211,18 @@ var createCard = function (adContent) {
   var photos = getPhotos(imageFromTemplate, adContent.offer.photos);
   var type = offerTypeList[adContent.offer.type].name;
 
+  var popupClose = card.querySelector('.popup__close');
+
+  var closePopup = function () {
+    map.removeChild(card);
+  };
+
+  var onPopupEscPress = function (evt) {
+    if (evt.keyCode === ESC_KEY) {
+      closePopup();
+    }
+  };
+
   card.querySelector('.popup__title').textContent = adContent.offer.title;
   card.querySelector('.popup__text--address').textContent = adContent.offer.address;
   card.querySelector('.popup__text--price').textContent = priceNight;
@@ -208,36 +234,22 @@ var createCard = function (adContent) {
   popupDescription.textContent = adContent.offer.description;
   card.querySelector('.popup__photos').replaceChild(photos, imageFromTemplate);
   card.querySelector('.popup__avatar').src = adContent.author.avatar;
+
+  popupClose.addEventListener('click', closePopup);
+  document.addEventListener('keydown', onPopupEscPress);
+
   return card;
 };
 
-var createCards = function () {
-  var adsContent = getAdsContent();
-  var cards = document.createDocumentFragment();
-  var blockAfterMap = map.querySelector('.map__filters-container');
-
-  map.insertBefore(cards, blockAfterMap);
-  cards.appendChild(createCard(adsContent[0]));
-
-  return cards;
-};
-
-var setCards = function () {
-  var cards = createCards();
-
-  mapPins.appendChild(cards);
-  mapPins.appendChild(createPins());
-};
-
-var onMapPinMainMousedown = (function (evt) {
+var onMapPinMainMousedown = function (evt) {
   evt.preventDefault();
   if (evt.button === LEFT_BUTTON_MOUSE) {
     activateMap();
   }
-});
+};
 
 var onMapPinMainEnterKeydown = function (evt) {
-  if (evt.key === ENTER_KEY) {
+  if (evt.keyCode === ENTER_KEY) {
     activateMap();
   }
 };
@@ -251,7 +263,7 @@ var onCheckOutInputChange = function (evt) {
 };
 
 var onTypeInputChange = function () {
-  var minPrice = offerTypeList[adFormType.value].price;
+  var minPrice = offerTypeList[adFormType.value].minPrice;
   adFormPrice.placeholder = minPrice;
   adFormPrice.minlength = minPrice;
 
@@ -281,7 +293,7 @@ var deactivateMap = function () {
 };
 
 var activateMap = function () {
-  setCards();
+  mapPins.appendChild(createPins());
 
   mapPinMain.removeEventListener('keydown', onMapPinMainEnterKeydown);
   mapPinMain.removeEventListener('mousedown', onMapPinMainMousedown);
