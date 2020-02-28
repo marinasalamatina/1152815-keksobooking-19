@@ -28,10 +28,7 @@ var imageWidth = rectPin.width;
 var imageHeight = rectPin.height;
 
 var map = document.querySelector('.map');
-var pin = document.querySelector('#pin');
 
-var mapPin = pin.content.querySelector('.map__pin');
-var mapPins = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
 var mainPinImage = mapPinMain.querySelector('img');
 var rectMainPin = mainPinImage.getBoundingClientRect();
@@ -135,8 +132,10 @@ var getAdsContent = function () {
 };
 
 var createPin = function (adContent) {
-  var pinClone = mapPin.cloneNode(true);
+  var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
   var pinImage = pinClone.querySelector('img');
+
+  var pinClone = mapPin.cloneNode(true);
   var card = createCard(adContent);
 
   var pinLocationLeft = adContent.location.x - imageWidth / 2 + 'px';
@@ -317,6 +316,7 @@ var deactivateMap = function () {
 };
 
 var activateMap = function () {
+  var mapPins = document.querySelector('.map__pins');
   mapPins.appendChild(createPins());
 
   mapPinMain.removeEventListener('keydown', onMapPinMainEnterKeydown);
