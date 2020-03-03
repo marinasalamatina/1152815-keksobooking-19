@@ -28,9 +28,6 @@ var imageWidth = rectPin.width;
 var imageHeight = rectPin.height;
 
 var map = document.querySelector('.map');
-var pin = document.querySelector('#pin');
-
-var mapPin = pin.content.querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
 var mainPinImage = mapPinMain.querySelector('img');
@@ -135,8 +132,9 @@ var getAdsContent = function () {
 };
 
 var createPin = function (adContent) {
-  var pinClone = mapPin.cloneNode(true);
-  var pinImage = pinClone.querySelector('img');
+  var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
+  var pin = mapPin.cloneNode(true);
+  var pinImage = pin.querySelector('img');
   var card = createCard(adContent);
 
   var pinLocationLeft = adContent.location.x - imageWidth / 2 + 'px';
@@ -160,15 +158,15 @@ var createPin = function (adContent) {
     }
   };
 
-  pinClone.style.left = pinLocationLeft;
-  pinClone.style.top = pinLocationTop;
+  pin.style.left = pinLocationLeft;
+  pin.style.top = pinLocationTop;
   pinImage.src = adContent.author.avatar;
   pinImage.alt = adContent.offer.title;
 
-  pinClone.addEventListener('click', onPinCloneMousedown);
-  pinClone.addEventListener('keydown', onPinCloneEnterPress);
+  pin.addEventListener('click', onPinCloneMousedown);
+  pin.addEventListener('keydown', onPinCloneEnterPress);
 
-  return pinClone;
+  return pin;
 };
 
 var createPins = function (adsContent) {
