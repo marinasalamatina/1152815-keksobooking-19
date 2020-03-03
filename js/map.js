@@ -23,7 +23,6 @@
   var mapPinMainHalfWidth = mapPinMainWidth / 2;
   var mapPinMainHeight = rectMainPin.height;
   var mapPinMainHalfHeight = mapPinMainHeight / 2;
-  var mapPinMainDoubleHeight = mapPinMainHeight * 2;
   var mapPinLocationX = Math.round(mapPinMainLeft + mapPinMainHalfWidth - mapLeft);
   var mapPinLocationY = Math.round(mapPinMainTop + mapPinMainHeight);
   var mapPinLocations = mapPinLocationX + ', ' + mapPinLocationY;
@@ -47,13 +46,13 @@
     var coordinateYRelativeMap = evtMousemove.clientY - mapPinMainHalfHeight;
 
     var shiftMaxMainPin = {
-      x: map.clientWidth - mapPinMainWidth,
-      y: map.clientHeight - mapPinMainDoubleHeight
+      x: map.clientWidth - mapPinMainHalfWidth,
+      y: window.data.OFFER_ADDRESS_MAX_Y - mapPinMainHeight
     };
 
     var shiftMinMainPin = {
-      x: 0,
-      y: 0
+      x: window.data.OFFER_ADDRESS_MIN_X - mapPinMainHalfWidth,
+      y: window.data.OFFER_ADDRESS_MIN_Y - mapPinMainHeight
     };
 
     if (coordinateXRelativeMap <= shiftMinMainPin.x) {

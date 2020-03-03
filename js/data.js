@@ -50,13 +50,19 @@
     return adContent;
   };
 
-  window.data = {
-    getAdsContent: function () {
-      var adsContent = [];
-      for (var i = 1; i <= ADS_NUMBER; i += 1) {
-        adsContent.push(getAdContent(i));
-      }
-      return adsContent;
+
+  var getAdsContent = function () {
+    var adsContent = [];
+    for (var i = 1; i <= ADS_NUMBER; i += 1) {
+      adsContent.push(getAdContent(i));
     }
+    return adsContent;
+  };
+
+  window.data = {
+    getAdsContent: getAdsContent,
+    OFFER_ADDRESS_MIN_Y: OFFER_ADDRESS_MIN_Y,
+    OFFER_ADDRESS_MAX_Y: OFFER_ADDRESS_MAX_Y,
+    OFFER_ADDRESS_MIN_X: OFFER_ADDRESS_MIN_X
   };
 })();
