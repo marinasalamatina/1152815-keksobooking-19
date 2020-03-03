@@ -112,14 +112,14 @@
     document.removeEventListener('mouseup', onDocumentMouseUp);
   };
 
-  var onUploadMousedown = function (evtMousedown) {
+  var onMainPinMousedown = function (evtMousedown) {
     evtMousedown.preventDefault();
 
     document.addEventListener('mousemove', onDocumentMouseMove);
     document.addEventListener('mouseup', onDocumentMouseUp);
   };
 
-  mapPinMain.addEventListener('mousedown', onUploadMousedown);
+  mapPinMain.addEventListener('mousedown', onMainPinMousedown);
 
   var deactivateMap = function () {
     map.classList.add('map--faded');
