@@ -23,6 +23,7 @@
   var mapPinMainHalfWidth = mapPinMainWidth / 2;
   var mapPinMainHeight = rectMainPin.height;
   var mapPinMainHalfHeight = mapPinMainHeight / 2;
+  var mapPinMainDoubleHeight = mapPinMainHeight * 2;
   var mapPinLocationX = Math.round(mapPinMainLeft + mapPinMainHalfWidth - mapLeft);
   var mapPinLocationY = Math.round(mapPinMainTop + mapPinMainHeight);
   var mapPinLocations = mapPinLocationX + ', ' + mapPinLocationY;
@@ -73,7 +74,7 @@
 
     var objectDraggableMaxShift = {
       x: screenWidth - mapPinMainWidth,
-      y: screenHeight - mapPinMainHeight * 2
+      y: screenHeight - mapPinMainDoubleHeight
     };
 
     if (coordinateXRelativeMap <= objectDraggableMinShift.x) {
