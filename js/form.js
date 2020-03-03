@@ -7,7 +7,17 @@
   var adFormRooms = adForm.querySelector('#room_number');
   var adFormType = adForm.querySelector('#type');
   var adFormPrice = adForm.querySelector('#price');
+  var adFormCheckout = adForm.querySelector('#timeout');
+  var adFormCheckin = adForm.querySelector('#timein');
   var adFormCapacity = adForm.querySelector('#capacity');
+
+  var onCheckInInputChange = function (evt) {
+    adFormCheckout.value = evt.currentTarget.value;
+  };
+
+  var onCheckOutInputChange = function (evt) {
+    adFormCheckin.value = evt.currentTarget.value;
+  };
 
   var validitePrice = function (customPrice, minPrice) {
     var validityMessageTypeInput = (customPrice < minPrice) ? 'Рекомендуемая цена за ночь от ' + minPrice + ' до ' + MAX_PRICENIGHT : '';
@@ -40,6 +50,8 @@
   };
 
   window.form = {
-    onSubmitButtonMousedown: onSubmitButtonMousedown
+    onSubmitButtonMousedown: onSubmitButtonMousedown,
+    onCheckInInputChange: onCheckInInputChange,
+    onCheckOutInputChange: onCheckOutInputChange
   };
 })();

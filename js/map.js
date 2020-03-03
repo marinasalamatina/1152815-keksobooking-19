@@ -40,83 +40,56 @@
     adFormAddress.value = mapPinLocationX + ', ' + mapPinLocationY;
   };
 
-  var onMapPinMainMousedown = function (evt) {
-    evt.preventDefault();
-    if (evt.button === LEFT_BUTTON_MOUSE) {
-      activateMap();
-    }
-  };
+  var onDocumentMouseMove = function (evtMousemove) {
+    evtMousemove.preventDefault();
 
-  var onMapPinMainEnterKeydown = function (evt) {
-    if (evt.key === 'Enter') {
-      activateMap();
-    }
-  };
+    var coordinateXRelativeMap = evtMousemove.clientX - mapLeft - mapPinMainHalfWidth;
+    var coordinateYRelativeMap = evtMousemove.clientY - mapPinMainHalfHeight;
 
-  var onCheckInInputChange = function (evt) {
-    adFormCheckout.value = evt.currentTarget.value;
-  };
+    var shiftMaxMainPin = {
+      x: map.clientWidth - mapPinMainWidth,
+      y: map.clientHeight - mapPinMainDoubleHeight
+    };
 
-  var onCheckOutInputChange = function (evt) {
-    adFormCheckin.value = evt.currentTarget.value;
-  };
-
-  var moveObject = function (evt, objectDraggable) {
-    var coordinateXRelativeMap = evt.clientX - mapLeft - mapPinMainHalfWidth;
-    var coordinateYRelativeMap = evt.clientY - mapPinMainHalfHeight;
-    var screenWidth = map.clientWidth;
-    var screenHeight = map.clientHeight;
-
-    var objectDraggableMinShift = {
+    var shiftMinMainPin = {
       x: 0,
       y: 0
     };
 
-    var objectDraggableMaxShift = {
-      x: screenWidth - mapPinMainWidth,
-      y: screenHeight - mapPinMainDoubleHeight
-    };
-
-    if (coordinateXRelativeMap <= objectDraggableMinShift.x) {
-      startCoordinates.left = objectDraggableMinShift.x;
-    } else if (coordinateXRelativeMap >= objectDraggableMaxShift.x) {
-      startCoordinates.left = objectDraggableMaxShift.x;
+    if (coordinateXRelativeMap <= shiftMinMainPin.x) {
+      startCoordinates.left = shiftMinMainPin.x;
+    } else if (coordinateXRelativeMap >= shiftMaxMainPin.x) {
+      startCoordinates.left = shiftMaxMainPin.x;
     } else {
       startCoordinates.left = coordinateXRelativeMap;
     }
 
-    if (coordinateYRelativeMap <= objectDraggableMinShift.y) {
-      startCoordinates.top = objectDraggableMinShift.y;
-    } else if (coordinateYRelativeMap >= objectDraggableMaxShift.y) {
-      startCoordinates.top = objectDraggableMaxShift.y;
+    if (coordinateYRelativeMap <= shiftMinMainPin.y) {
+      startCoordinates.top = shiftMinMainPin.y;
+    } else if (coordinateYRelativeMap >= shiftMaxMainPin.y) {
+      startCoordinates.top = shiftMaxMainPin.y;
     } else {
       startCoordinates.top = coordinateYRelativeMap;
     }
 
-    objectDraggable.style.left = startCoordinates.left + 'px';
-    objectDraggable.style.top = startCoordinates.top + 'px';
+    mapPinMain.style.left = startCoordinates.left + 'px';
+    mapPinMain.style.top = startCoordinates.top + 'px';
 
     getMainPinCoordinates(startCoordinates.left, startCoordinates.top);
   };
 
-  var onDocumentMouseMove = function (evtMousemove) {
-    evtMousemove.preventDefault();
-
-    moveObject(evtMousemove, mapPinMain);
-  };
-
-  var onDocumentMouseUp = function (evtMouseup) {
+  var onDocumentMouseup = function (evtMouseup) {
     evtMouseup.preventDefault();
 
     document.removeEventListener('mousemove', onDocumentMouseMove);
-    document.removeEventListener('mouseup', onDocumentMouseUp);
+    document.removeEventListener('mouseup', onDocumentMouseup);
   };
 
   var onMainPinMousedown = function (evtMousedown) {
     evtMousedown.preventDefault();
 
     document.addEventListener('mousemove', onDocumentMouseMove);
-    document.addEventListener('mouseup', onDocumentMouseUp);
+    document.addEventListener('mouseup', onDocumentMouseup);
   };
 
   mapPinMain.addEventListener('mousedown', onMainPinMousedown);
@@ -150,14 +123,27 @@
     adFormAddress.value = mapPinLocations;
 
     adFormCheckin.addEventListener('change', function () {
-      onCheckInInputChange(window.event);
+      window.form.onCheckInInputChange(window.event);
     });
 
     adFormCheckout.addEventListener('change', function () {
-      onCheckOutInputChange(window.event);
+      window.form.onCheckOutInputChange(window.event);
     });
 
     adFormSubmit.addEventListener('click', window.form.onSubmitButtonMousedown);
+  };
+
+  var onMapPinMainMousedown = function (evt) {
+    evt.preventDefault();
+    if (evt.button === LEFT_BUTTON_MOUSE) {
+      activateMap();
+    }
+  };
+
+  var onMapPinMainEnterKeydown = function (evt) {
+    if (evt.key === 'Enter') {
+      activateMap();
+    }
   };
 
   deactivateMap();
