@@ -250,13 +250,13 @@ var createCard = function (adContent) {
   return card;
 };
 
-var checkTypeInputValidity = function (customPrice, minPrice) {
+var validitePrice = function (customPrice, minPrice) {
   var validityMessageTypeInput = (customPrice < minPrice) ? 'Рекомендуемая цена за ночь от ' + minPrice + ' до ' + MAX_PRICENIGHT : '';
 
   return validityMessageTypeInput;
 };
 
-var checkCapacityInputValidity = function (rooms, guests) {
+var validiteCapacity = function (rooms, guests) {
   var validityMessageCapacityInput = (guests > rooms) || ((guests === 0) !== (rooms === 100)) ? 'Нужно выбрать больше комнат или изменить число гостей' : '';
 
   return validityMessageCapacityInput;
@@ -290,13 +290,13 @@ var onSubmitButtonMousedown = function (evt) {
   var customPrice = Number(adFormPrice.value);
   adFormPrice.placeholder = minPrice;
 
-  var validityMessageCapacityInput = checkCapacityInputValidity(rooms, guests);
-  adFormCapacity.setCustomValidity(validityMessageCapacityInput);
+  var validityMessageCapacity = validiteCapacity(rooms, guests);
+  adFormCapacity.setCustomValidity(validityMessageCapacity);
 
-  var validityMessageTypeInput = checkTypeInputValidity(customPrice, minPrice);
-  adFormPrice.setCustomValidity(validityMessageTypeInput);
+  var validityMessagePrice = validitePrice(customPrice, minPrice);
+  adFormPrice.setCustomValidity(validityMessagePrice);
 
-  if (validityMessageCapacityInput === true || validityMessageTypeInput === true) {
+  if (validityMessageCapacity === true || validityMessagePrice === true) {
     evt.preventDefault();
   }
 };
