@@ -145,7 +145,7 @@ var createPin = function (adContent) {
   var openPopup = function () {
     var mapCardCurrentOpen = map.querySelector('.map__card');
     if (mapCardCurrentOpen) {
-      map.replaceChild(card, mapCardCurrentOpen);
+      map.replaceWith(card, mapCardCurrentOpen);
     }
     map.appendChild(card);
   };
