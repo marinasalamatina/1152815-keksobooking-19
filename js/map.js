@@ -2,6 +2,7 @@
 
 (function () {
   var LEFT_BUTTON_MOUSE = 0;
+  var ADS_NUMBER = 8;
 
   var map = document.querySelector('.map');
   var mapLeft = map.getBoundingClientRect().left;
@@ -26,6 +27,11 @@
   var pinLocationX = Math.round(pinMainLeft + pinMainHalfWidth - mapLeft);
   var pinLocationY = Math.round(pinMainTop + pinMainHeight);
   var pinLocations = pinLocationX + ', ' + pinLocationY;
+
+  var main = document.querySelector('main');
+  var error = document.querySelector('#error');
+  var errorTemplate = error.content.querySelector('.error');
+  var errorButton = errorTemplate.querySelector('.error__button');
 
   var startCoordinates = {
     left: pinMainLeft,
@@ -97,9 +103,43 @@
     adFormAddress.value = pinLocations;
   };
 
-  var activateMap = function () {
-    mapPins.appendChild(window.pin.createPins());
+  var removeErrorWindow = function () {
+    var errorWindow = document.querySelector('.error');
+    if (errorWindow) {
+      errorButton.disabled = false;
+      errorWindow.parentNode.removeChild(errorWindow);
+    }
+  };
 
+  var onErrorButtonClick = function (evt) {
+    evt.preventDefault();
+    errorButton.classList.remove('ad-form--disabled');
+    errorButton.setAttribute('disabled', true);
+    errorButton.removeEventListener('click', onErrorButtonClick);
+    window.backend.load(onSuccess, onError);
+  };
+
+  var makeFragment = function (cards, number) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < number; i += 1) {
+      fragment.appendChild(window.pin.createPin(cards[i]));
+    }
+    return fragment;
+  };
+
+  var onError = function () {
+    removeErrorWindow();
+    errorButton.addEventListener('click', onErrorButtonClick);
+    main.appendChild(errorTemplate);
+  };
+
+  var onSuccess = function (cards) {
+    removeErrorWindow();
+    mapPins.appendChild(makeFragment(cards, ADS_NUMBER));
+  };
+
+  var activateMap = function () {
     mapPinMain.removeEventListener('keydown', onPinMainEnterKeydown);
 
     map.classList.remove('map--faded');
@@ -120,6 +160,7 @@
     });
 
     adFormSubmit.addEventListener('click', window.form.onSubmitButtonMousedown);
+    window.backend.load(onSuccess, onError);
   };
 
   var onPinMainMousedown = function (evtMousedown) {
@@ -139,6 +180,9 @@
     }
   };
 
-  mapPinMain.addEventListener('mousedown', onPinMainMousedown);
   deactivateMap();
+
+  window.map = {
+    deactivateMap: deactivateMap()
+  };
 })();

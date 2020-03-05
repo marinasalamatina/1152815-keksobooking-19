@@ -2,6 +2,7 @@
 
 (function () {
   var map = document.querySelector('.map');
+  var filtersContainer = map.querySelector('.map__filters-container');
 
   var rectPin = document.querySelector('.map__pin').querySelector('img').getBoundingClientRect();
   var imageWidth = rectPin.width;
@@ -19,9 +20,9 @@
     var openPopup = function () {
       var mapCardCurrentOpen = map.querySelector('.map__card');
       if (mapCardCurrentOpen) {
-        map.replaceWith(card, mapCardCurrentOpen);
+        map.replaceChild(card, mapCardCurrentOpen);
       }
-      map.appendChild(card);
+      map.insertBefore(card, filtersContainer);
     };
 
     var onPinCloneMousedown = function () {
@@ -45,17 +46,7 @@
     return pin;
   };
 
-  var createPins = function (adsContent) {
-    var pins = document.createDocumentFragment();
-    adsContent = window.data.getAdsContent();
-
-    for (var i = 0; i < adsContent.length; i += 1) {
-      pins.appendChild(createPin(adsContent[i]));
-    }
-    return pins;
-  };
-
   window.pin = {
-    createPins: createPins
+    createPin: createPin
   };
 })();
