@@ -4,24 +4,27 @@
   var MAX_PRICENIGHT = 1000000;
 
   var adForm = document.querySelector('.ad-form');
-  var adFormRooms = adForm.querySelector('#room_number');
-  var adFormType = adForm.querySelector('#type');
-  var adFormPrice = adForm.querySelector('#price');
-  var adFormCheckout = adForm.querySelector('#timeout');
-  var adFormCheckin = adForm.querySelector('#timein');
-  var adFormCapacity = adForm.querySelector('#capacity');
-  var windowErrorTemplate = document.querySelector('#error').content.querySelector('.error');
+
   var successTemplate = document.querySelector('#success ').content.querySelector('.success');
+  var success = successTemplate.cloneNode(true);
+
+  var windowErrorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var errorWindow = windowErrorTemplate.cloneNode(true);
 
   var onCheckInInputChange = function (evt) {
+    var adFormCheckout = adForm.querySelector('#timeout');
     adFormCheckout.value = evt.currentTarget.value;
   };
 
   var onCheckOutInputChange = function (evt) {
+    var adFormCheckin = adForm.querySelector('#timein');
     adFormCheckin.value = evt.currentTarget.value;
   };
 
   var validitePrice = function () {
+    var adFormPrice = adForm.querySelector('#price');
+    var adFormType = adForm.querySelector('#type');
+
     var minPrice = window.card.offerTypeList[adFormType.value].minPrice;
     var customPrice = Number(adFormPrice.value);
     adFormPrice.placeholder = minPrice;
@@ -33,6 +36,9 @@
   };
 
   var validiteCapacity = function () {
+    var adFormCapacity = adForm.querySelector('#capacity');
+    var adFormRooms = adForm.querySelector('#room_number');
+
     var rooms = Number(adFormRooms.value);
     var guests = Number(adFormCapacity.value);
 
@@ -47,39 +53,52 @@
     return isValid;
   };
 
-  var onError = function (message) {
-    var errorWindow = windowErrorTemplate.cloneNode(true);
-    var errorMessage = errorWindow.querySelector('.error__message');
-    var errorButton = errorWindow.querySelector('.error__button');
+  var onSuccessMessageClick = function () {
+    document.body.removeChild(success);
+    document.removeEventListener('click', onSuccessMessageClick);
+  };
 
-    errorButton.addEventListener('click', function (evt) {
-      evt.preventDefault();
-      document.body.removeChild(errorWindow);
-      window.backend.save(new FormData(adForm), onLoad, onError);
-    });
+  var onSuccessMessageEscapePress = function (evt) {
+    if (evt.key === 'Escape') {
+      document.body.removeChild(success);
+      document.removeEventListener('keydown', onSuccessMessageEscapePress);
+    }
+  };
 
-    errorMessage.textContent = message;
-    document.body.appendChild(errorWindow);
+  var closeErrorWindow = function () {
+    document.body.removeChild(errorWindow);
+
+    document.removeEventListener('click', onErrorButtonClick);
+    document.removeEventListener('keydown', onErrorButtonEscapePress);
+  };
+
+  var onErrorButtonClick = function (evt) {
+    evt.preventDefault();
+    closeErrorWindow();
+  };
+
+  var onErrorButtonEscapePress = function (evt) {
+    evt.preventDefault();
+    if (evt.key === 'Escape') {
+      closeErrorWindow();
+    }
   };
 
   var onLoad = function () {
-    var success = successTemplate.cloneNode(true);
-
-    var onSuccessMessageClick = function () {
-      document.body.removeChild(success);
-      document.removeEventListener('click', onSuccessMessageClick);
-    };
-
-    var onSuccessMessageEsc = function (evt) {
-      if (evt.key === 'Escape') {
-        document.body.removeChild(success);
-        document.removeEventListener('click', onSuccessMessageEsc);
-      }
-    };
-
     document.body.appendChild(success);
     document.addEventListener('click', onSuccessMessageClick);
-    document.addEventListener('click', onSuccessMessageEsc);
+    document.addEventListener('keydown', onSuccessMessageEscapePress);
+  };
+
+  var onError = function (message) {
+    var errorMessage = errorWindow.querySelector('.error__message');
+    var errorButton = errorWindow.querySelector('.error__button');
+
+    errorMessage.textContent = message;
+    document.body.appendChild(errorWindow);
+
+    errorButton.addEventListener('click', onErrorButtonClick);
+    document.addEventListener('keydown', onErrorButtonEscapePress);
   };
 
   var onSubmitButtonMousedown = function (evt) {

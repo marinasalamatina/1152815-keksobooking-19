@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var map = document.querySelector('.map');
-
   var offerTypeList = {
     'bungalo': {
       name: 'Бунгало',
@@ -62,6 +60,7 @@
     var popupClose = card.querySelector('.popup__close');
 
     var closePopup = function () {
+      var map = document.querySelector('.map');
       map.removeChild(card);
     };
 
