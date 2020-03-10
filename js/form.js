@@ -11,6 +11,37 @@
   var windowErrorTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorWindow = windowErrorTemplate.cloneNode(true);
 
+  var onSuccessMessageClick = function () {
+    document.body.removeChild(success);
+    document.removeEventListener('click', onSuccessMessageClick);
+  };
+
+  var onSuccessMessageEscapePress = function (evt) {
+    if (evt.key === 'Escape') {
+      document.body.removeChild(success);
+      document.removeEventListener('keydown', onSuccessMessageEscapePress);
+    }
+  };
+
+  var closeErrorWindow = function () {
+    document.body.removeChild(errorWindow);
+
+    document.removeEventListener('click', onErrorButtonClick);
+    document.removeEventListener('keydown', onErrorButtonEscapePress);
+  };
+
+  var onErrorButtonClick = function (evt) {
+    evt.preventDefault();
+    closeErrorWindow();
+  };
+
+  var onErrorButtonEscapePress = function (evt) {
+    evt.preventDefault();
+    if (evt.key === 'Escape') {
+      closeErrorWindow();
+    }
+  };
+
   var onCheckInInputChange = function (evt) {
     var adFormCheckout = adForm.querySelector('#timeout');
     adFormCheckout.value = evt.currentTarget.value;
@@ -51,37 +82,6 @@
   var validateForm = function () {
     var isValid = (!validiteCapacity()) && (!validitePrice());
     return isValid;
-  };
-
-  var onSuccessMessageClick = function () {
-    document.body.removeChild(success);
-    document.removeEventListener('click', onSuccessMessageClick);
-  };
-
-  var onSuccessMessageEscapePress = function (evt) {
-    if (evt.key === 'Escape') {
-      document.body.removeChild(success);
-      document.removeEventListener('keydown', onSuccessMessageEscapePress);
-    }
-  };
-
-  var closeErrorWindow = function () {
-    document.body.removeChild(errorWindow);
-
-    document.removeEventListener('click', onErrorButtonClick);
-    document.removeEventListener('keydown', onErrorButtonEscapePress);
-  };
-
-  var onErrorButtonClick = function (evt) {
-    evt.preventDefault();
-    closeErrorWindow();
-  };
-
-  var onErrorButtonEscapePress = function (evt) {
-    evt.preventDefault();
-    if (evt.key === 'Escape') {
-      closeErrorWindow();
-    }
   };
 
   var onLoad = function () {
