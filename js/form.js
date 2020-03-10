@@ -5,26 +5,26 @@
 
   var adForm = document.querySelector('.ad-form');
 
-  var successTemplate = document.querySelector('#success ').content.querySelector('.success');
-  var success = successTemplate.cloneNode(true);
+  var successPopupTemplate = document.querySelector('#success ').content.querySelector('.success');
+  var successPopup = successPopupTemplate.cloneNode(true);
 
-  var windowErrorTemplate = document.querySelector('#error').content.querySelector('.error');
-  var errorWindow = windowErrorTemplate.cloneNode(true);
+  var windowPopupTemplate = document.querySelector('#error').content.querySelector('.error');
+  var errorPopup = windowPopupTemplate.cloneNode(true);
 
   var onSuccessMessageClick = function () {
-    document.body.removeChild(success);
+    document.body.removeChild(successPopup);
     document.removeEventListener('click', onSuccessMessageClick);
   };
 
   var onSuccessMessageEscapePress = function (evt) {
     if (evt.key === 'Escape') {
-      document.body.removeChild(success);
+      document.body.removeChild(successPopup);
       document.removeEventListener('keydown', onSuccessMessageEscapePress);
     }
   };
 
   var closeErrorWindow = function () {
-    document.body.removeChild(errorWindow);
+    document.body.removeChild(errorPopup);
 
     document.removeEventListener('click', onErrorButtonClick);
     document.removeEventListener('keydown', onErrorButtonEscapePress);
@@ -85,17 +85,17 @@
   };
 
   var onLoad = function () {
-    document.body.appendChild(success);
+    document.body.appendChild(successPopup);
     document.addEventListener('click', onSuccessMessageClick);
     document.addEventListener('keydown', onSuccessMessageEscapePress);
   };
 
   var onError = function (message) {
-    var errorMessage = errorWindow.querySelector('.error__message');
-    var errorButton = errorWindow.querySelector('.error__button');
+    var errorMessage = errorPopup.querySelector('.error__message');
+    var errorButton = errorPopup.querySelector('.error__button');
 
     errorMessage.textContent = message;
-    document.body.appendChild(errorWindow);
+    document.body.appendChild(errorPopup);
 
     errorButton.addEventListener('click', onErrorButtonClick);
     document.addEventListener('keydown', onErrorButtonEscapePress);

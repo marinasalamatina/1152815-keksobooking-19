@@ -2,15 +2,17 @@
 
 window.backend = (function () {
   var SAVE_URL = 'https://js.dump.academy/keksobooking';
-  var LOAD_URL = SAVE_URL + '/data';
+  var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
+  var MAX_TIMEOUT = 10000;
+  var SUCCESS_CODE = 200;
 
   var createXhr = function (xhr, url, type, onLoad, onError) {
     xhr.responseType = 'json';
-    xhr.timeout = 10000;
+    xhr.timeout = MAX_TIMEOUT;
     xhr.open(type, url);
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCCESS_CODE) {
         onLoad(xhr.response);
       } else {
         onError('Код ошибки: ' + xhr.status + ' ' + xhr.statusText);
