@@ -4,12 +4,20 @@
   var MAX_PRICENIGHT = 1000000;
 
   var adForm = document.querySelector('.ad-form');
+  var adFormCheckin = adForm.querySelector('#timein');
+  var adFormCheckout = adForm.querySelector('#timeout');
+  var adFormPrice = adForm.querySelector('#price');
+  var adFormType = adForm.querySelector('#type');
+  var adFormCapacity = adForm.querySelector('#capacity');
+  var adFormRooms = adForm.querySelector('#room_number');
 
   var successPopupTemplate = document.querySelector('#success ').content.querySelector('.success');
   var successPopup = successPopupTemplate.cloneNode(true);
 
   var windowPopupTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorPopup = windowPopupTemplate.cloneNode(true);
+  var errorMessage = errorPopup.querySelector('.error__message');
+  var errorButton = errorPopup.querySelector('.error__button');
 
   var onSuccessMessageClick = function () {
     document.body.remove();
@@ -43,20 +51,16 @@
   };
 
   var onCheckInInputChange = function (evt) {
-    var adFormCheckout = adForm.querySelector('#timeout');
     adFormCheckout.value = evt.currentTarget.value;
   };
 
   var onCheckOutInputChange = function (evt) {
-    var adFormCheckin = adForm.querySelector('#timein');
     adFormCheckin.value = evt.currentTarget.value;
   };
 
   var validitePrice = function () {
-    var adFormPrice = adForm.querySelector('#price');
-    var adFormType = adForm.querySelector('#type');
-
-    var minPrice = window.card.offerTypeList[adFormType.value].minPrice;
+    var typeValue = adFormType.value;
+    var minPrice = window.card.offerTypeList[typeValue].minPrice;
     var customPrice = Number(adFormPrice.value);
     adFormPrice.placeholder = minPrice;
 
@@ -67,9 +71,6 @@
   };
 
   var validiteCapacity = function () {
-    var adFormCapacity = adForm.querySelector('#capacity');
-    var adFormRooms = adForm.querySelector('#room_number');
-
     var rooms = Number(adFormRooms.value);
     var guests = Number(adFormCapacity.value);
 
@@ -91,9 +92,6 @@
   };
 
   var onError = function (message) {
-    var errorMessage = errorPopup.querySelector('.error__message');
-    var errorButton = errorPopup.querySelector('.error__button');
-
     errorMessage.textContent = message;
     document.body.appendChild(errorPopup);
 
