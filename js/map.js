@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var PIN_MAIN_MIN_X = 0;
+  var PIN_MAIN_MIN_Y = 130;
+  var PIN_MAIN_MAX_Y = 630;
+
   var LEFT_BUTTON_MOUSE = 0;
   var ADS_NUMBER = 8;
 
@@ -77,12 +81,12 @@
 
     var shiftMaxMainPin = {
       x: map.clientWidth - pinMainHalfWidth,
-      y: window.data.OFFER_ADDRESS_MAX_Y - pinMainHeight
+      y: PIN_MAIN_MAX_Y - pinMainHeight
     };
 
     var shiftMinMainPin = {
-      x: window.data.OFFER_ADDRESS_MIN_X - pinMainHalfWidth,
-      y: window.data.OFFER_ADDRESS_MIN_Y - pinMainHeight
+      x: PIN_MAIN_MIN_X - pinMainHalfWidth,
+      y: PIN_MAIN_MIN_Y - pinMainHeight
     };
 
     if (coordinateXRelativeMap <= shiftMinMainPin.x) {
