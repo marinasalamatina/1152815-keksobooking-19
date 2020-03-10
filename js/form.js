@@ -12,19 +12,19 @@
   var errorPopup = windowPopupTemplate.cloneNode(true);
 
   var onSuccessMessageClick = function () {
-    document.body.removeChild(successPopup);
+    document.body.remove();
     document.removeEventListener('click', onSuccessMessageClick);
   };
 
   var onSuccessMessageEscapePress = function (evt) {
     if (evt.key === 'Escape') {
-      document.body.removeChild(successPopup);
+      document.body.remove();
       document.removeEventListener('keydown', onSuccessMessageEscapePress);
     }
   };
 
   var closeErrorWindow = function () {
-    document.body.removeChild(errorPopup);
+    document.body.remove();
 
     document.removeEventListener('click', onErrorButtonClick);
     document.removeEventListener('keydown', onErrorButtonEscapePress);
