@@ -59,8 +59,9 @@
   };
 
   var validitePrice = function () {
-    var typeValue = adFormType.value;
-    var minPrice = window.card.offerTypeList[typeValue].minPrice;
+    var adFormTypeValue = adFormType.value;
+    var typeValue = window.card.offerTypeList[adFormTypeValue];
+    var minPrice = typeValue.minPrice;
     var customPrice = Number(adFormPrice.value);
     adFormPrice.placeholder = minPrice;
 
@@ -100,9 +101,9 @@
   };
 
   var onSubmitButtonMousedown = function (evt) {
-    var formCorrect = validateForm();
+    var isFormCorrect = validateForm();
 
-    if (formCorrect) {
+    if (isFormCorrect) {
       evt.preventDefault();
 
       window.backend.save(new FormData(adForm), onLoad, onError);
