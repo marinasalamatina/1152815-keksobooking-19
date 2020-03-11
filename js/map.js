@@ -15,7 +15,6 @@
   var adForm = document.querySelector('.ad-form');
   var adFormAddress = adForm.querySelector('#address');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
-  var adFormSubmit = adForm.querySelector('.ad-form__submit');
   var adFormCheckout = adForm.querySelector('#timeout');
   var adFormCheckin = adForm.querySelector('#timein');
 
@@ -68,7 +67,8 @@
     var pins = document.createDocumentFragment();
 
     for (var i = 0; i < number; i += 1) {
-      pins.appendChild(window.pin.createPin(cards[i]));
+      var pin = window.pin.createPin(cards[i]);
+      pins.appendChild(pin);
     }
     return pins;
   };
@@ -149,7 +149,7 @@
       window.form.onCheckOutInputChange(window.event);
     });
 
-    adFormSubmit.addEventListener('click', window.form.onSubmitButtonMousedown);
+    adForm.addEventListener('click', window.form.onSubmitButtonMousedown);
     window.backend.load(onSuccess, onError);
   };
 
