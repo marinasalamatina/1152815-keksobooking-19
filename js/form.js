@@ -19,34 +19,36 @@
   var errorMessage = errorPopup.querySelector('.error__message');
   var errorButton = errorPopup.querySelector('.error__button');
 
-  var onSuccessMessageClick = function () {
-    successPopup.remove();
-    document.removeEventListener('click', onSuccessMessageClick);
+  var removeErrorPopup = function () {
+    errorPopup.remove();
+    errorButton.removeEventListener('click', onErrorButtonClick);
+    errorButton.removeEventListener('keydown', onErrorButtonKeyPress);
   };
 
-  var onSuccessMessageEscapePress = function (evt) {
-    if (evt.key === 'Escape') {
-      successPopup.remove();
-      document.removeEventListener('keydown', onSuccessMessageEscapePress);
+  var onErrorButtonClick = function () {
+    removeErrorPopup();
+  };
+
+  var onErrorButtonKeyPress = function (evt) {
+    evt.preventDefault();
+    if (evt.key === 'Enter' || evt.key === 'Escape') {
+      removeErrorPopup();
     }
   };
 
-  var closeErrorWindow = function () {
-    errorPopup.remove();
-
-    document.removeEventListener('click', onErrorButtonClick);
-    document.removeEventListener('keydown', onErrorButtonEscapePress);
+  var removeSuccessMessage = function () {
+    successPopup.remove();
+    document.removeEventListener('click', onSuccessMessageClick);
+    document.removeEventListener('keydown', onSuccessMessageKeyPress);
   };
 
-  var onErrorButtonClick = function (evt) {
-    evt.preventDefault();
-    closeErrorWindow();
+  var onSuccessMessageClick = function () {
+    removeSuccessMessage();
   };
 
-  var onErrorButtonEscapePress = function (evt) {
-    evt.preventDefault();
-    if (evt.key === 'Escape') {
-      closeErrorWindow();
+  var onSuccessMessageKeyPress = function (evt) {
+    if (evt.key === 'Enter' || evt.key === 'Escape') {
+      removeSuccessMessage();
     }
   };
 
@@ -77,7 +79,6 @@
 
     var validityMessageCapacity = (guests > rooms) || ((guests === 0) !== (rooms === 100)) ? 'Нужно выбрать больше комнат или изменить число гостей' : '';
     adFormCapacity.setCustomValidity(validityMessageCapacity);
-
     return validityMessageCapacity;
   };
 
@@ -89,7 +90,8 @@
   var onLoad = function () {
     document.body.appendChild(successPopup);
     document.addEventListener('click', onSuccessMessageClick);
-    document.addEventListener('keydown', onSuccessMessageEscapePress);
+    document.addEventListener('keydown', onSuccessMessageKeyPress);
+    window.map.deactivateMap();
   };
 
   var onError = function (message) {
@@ -97,18 +99,16 @@
     document.body.appendChild(errorPopup);
 
     errorButton.addEventListener('click', onErrorButtonClick);
-    document.addEventListener('keydown', onErrorButtonEscapePress);
+    errorButton.addEventListener('keydown', onErrorButtonKeyPress);
+    document.addEventListener('keydown', onErrorButtonKeyPress);
   };
 
   var onAdFormSubmit = function (evt) {
     var isFormCorrect = validateForm();
-    window.backend.load(window.map.onSuccess, onError);
 
     if (isFormCorrect) {
       evt.preventDefault();
-
       window.backend.save(new FormData(adForm), onLoad, onError);
-      window.map.deactivateMap();
     }
   };
 

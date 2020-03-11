@@ -13,6 +13,7 @@
   var mapPins = document.querySelector('.map__pins');
 
   var adForm = document.querySelector('.ad-form');
+  var adFormSubmit = adForm.querySelector('.ad-form__submit');
   var adFormAddress = adForm.querySelector('#address');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
   var adFormCheckout = adForm.querySelector('#timeout');
@@ -31,8 +32,10 @@
   var pinLocationY = Math.round(pinMainTop + pinMainHeight);
   var pinLocations = pinLocationX + ', ' + pinLocationY;
 
-  var error = document.querySelector('#error').content.querySelector('.error');
-  var errorButton = error.querySelector('.error__button');
+  var windowPopupTemplate = document.querySelector('#error').content.querySelector('.error');
+  var errorPopup = windowPopupTemplate.cloneNode(true);
+  var errorMessage = errorPopup.querySelector('.error__message');
+  var errorButton = errorPopup.querySelector('.error__button');
 
   var startCoordinates = {
     left: pinMainLeft,
@@ -46,11 +49,22 @@
     adFormAddress.value = pinLocationX + ', ' + pinLocationY;
   };
 
-  var onErrorButtonClick = function (evt) {
-    evt.preventDefault();
-    error.remove();
-    window.backend.load(onSuccess, onError);
+  var removeErrorMessage = function () {
+    errorPopup.remove();
     errorButton.removeEventListener('click', onErrorButtonClick);
+    errorButton.removeEventListener('keydown', onErrorButtonKeyPress);
+    window.backend.load(onSuccess, onError);
+  };
+
+  var onErrorButtonClick = function () {
+    removeErrorMessage();
+  };
+
+  var onErrorButtonKeyPress = function (evt) {
+    evt.preventDefault();
+    if (evt.key === 'Enter' || evt.key === 'Escape') {
+      removeErrorMessage();
+    }
   };
 
   var createPins = function (cards, number) {
@@ -108,13 +122,18 @@
     document.removeEventListener('mouseup', onDocumentMouseup);
   };
 
-  var onError = function () {
+  var onError = function (message) {
+    errorMessage.textContent = message;
+    document.body.appendChild(errorPopup);
+
     errorButton.addEventListener('click', onErrorButtonClick);
-    document.body.appendChild(error);
+    errorButton.addEventListener('keydown', onErrorButtonKeyPress);
+    document.addEventListener('keydown', onErrorButtonKeyPress);
   };
 
   var onSuccess = function (cards) {
-    mapPins.appendChild(createPins(cards, ADS_NUMBER));
+    var pins = createPins(cards, ADS_NUMBER);
+    mapPins.appendChild(pins);
   };
 
   var activateMap = function () {
@@ -137,7 +156,9 @@
       window.form.onCheckOutInputChange(window.event);
     });
 
-    adForm.addEventListener('click', window.form.onAdFormSubmit);
+    adForm.addEventListener('submit', window.form.onAdFormSubmit);
+    adFormSubmit.addEventListener('click', window.form.onAdFormSubmit);
+
     window.backend.load(onSuccess, onError);
   };
 
@@ -165,8 +186,18 @@
       fieldset.setAttribute('disabled', true);
     });
 
+    var listMapPins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
+    if (listMapPins) {
+      listMapPins.forEach(function (element) {
+        mapPins.removeChild(element);
+      });
+    }
+
     mapPinMain.addEventListener('mousedown', onPinMainMousedown);
     mapPinMain.addEventListener('keydown', onPinMainEnterKeydown);
+
+    adForm.removeEventListener('submit', window.form.onAdFormSubmit);
+    adFormSubmit.removeEventListener('click', window.form.onAdFormSubmit);
 
     adFormAddress.value = pinLocations;
   };
@@ -175,7 +206,6 @@
 
   window.map = {
     deactivateMap: deactivateMap,
-    onError: onError,
     onSuccess: onSuccess
   };
 })();
