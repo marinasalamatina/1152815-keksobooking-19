@@ -186,6 +186,6 @@
   deactivateMap();
 
   window.map = {
-    deactivateMap: deactivateMap()
+    deactivateMap: deactivateMap
   };
 })();
