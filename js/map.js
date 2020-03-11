@@ -64,13 +64,13 @@
     window.backend.load(onSuccess, onError);
   };
 
-  var makeFragment = function (cards, number) {
-    var fragment = document.createDocumentFragment();
+  var createPins = function (cards, number) {
+    var pins = document.createDocumentFragment();
 
     for (var i = 0; i < number; i += 1) {
-      fragment.appendChild(window.pin.createPin(cards[i]));
+      pins.appendChild(window.pin.createPin(cards[i]));
     }
-    return fragment;
+    return pins;
   };
 
   var onDocumentMouseMove = function (evtMousemove) {
@@ -126,7 +126,7 @@
 
   var onSuccess = function (cards) {
     removeErrorWindow();
-    mapPins.appendChild(makeFragment(cards, ADS_NUMBER));
+    mapPins.appendChild(createPins(cards, ADS_NUMBER));
   };
 
   var activateMap = function () {

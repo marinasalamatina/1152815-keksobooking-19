@@ -20,19 +20,19 @@
   var errorButton = errorPopup.querySelector('.error__button');
 
   var onSuccessMessageClick = function () {
-    document.body.remove();
+    successPopup.remove();
     document.removeEventListener('click', onSuccessMessageClick);
   };
 
   var onSuccessMessageEscapePress = function (evt) {
     if (evt.key === 'Escape') {
-      document.body.remove();
+      successPopup.remove();
       document.removeEventListener('keydown', onSuccessMessageEscapePress);
     }
   };
 
   var closeErrorWindow = function () {
-    document.body.remove();
+    errorPopup.remove();
 
     document.removeEventListener('click', onErrorButtonClick);
     document.removeEventListener('keydown', onErrorButtonEscapePress);
