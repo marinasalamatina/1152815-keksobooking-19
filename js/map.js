@@ -31,9 +31,8 @@
   var pinLocationY = Math.round(pinMainTop + pinMainHeight);
   var pinLocations = pinLocationX + ', ' + pinLocationY;
 
-  var error = document.querySelector('#error');
-  var errorTemplate = error.content.querySelector('.error');
-  var errorButton = errorTemplate.querySelector('.error__button');
+  var error = document.querySelector('#error').content.querySelector('.error');
+  var errorButton = error.querySelector('.error__button');
 
   var startCoordinates = {
     left: pinMainLeft,
@@ -47,20 +46,11 @@
     adFormAddress.value = pinLocationX + ', ' + pinLocationY;
   };
 
-  var removeErrorWindow = function () {
-    var errorWindow = document.querySelector('.error');
-    if (errorWindow) {
-      errorButton.disabled = false;
-      errorWindow.parentNode.removeChild(errorWindow);
-    }
-  };
-
   var onErrorButtonClick = function (evt) {
     evt.preventDefault();
-    errorButton.classList.remove('ad-form--disabled');
-    errorButton.setAttribute('disabled', true);
-    errorButton.removeEventListener('click', onErrorButtonClick);
+    error.remove();
     window.backend.load(onSuccess, onError);
+    errorButton.removeEventListener('click', onErrorButtonClick);
   };
 
   var createPins = function (cards, number) {
@@ -119,13 +109,11 @@
   };
 
   var onError = function () {
-    removeErrorWindow();
     errorButton.addEventListener('click', onErrorButtonClick);
-    document.body.appendChild(errorTemplate);
+    document.body.appendChild(error);
   };
 
   var onSuccess = function (cards) {
-    removeErrorWindow();
     mapPins.appendChild(createPins(cards, ADS_NUMBER));
   };
 
@@ -149,7 +137,7 @@
       window.form.onCheckOutInputChange(window.event);
     });
 
-    adForm.addEventListener('click', window.form.onSubmitButtonMousedown);
+    adForm.addEventListener('click', window.form.onAdFormSubmit);
     window.backend.load(onSuccess, onError);
   };
 
@@ -186,6 +174,8 @@
   deactivateMap();
 
   window.map = {
-    deactivateMap: deactivateMap
+    deactivateMap: deactivateMap,
+    onError: onError,
+    onSuccess: onSuccess
   };
 })();

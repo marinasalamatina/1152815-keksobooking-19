@@ -100,8 +100,9 @@
     document.addEventListener('keydown', onErrorButtonEscapePress);
   };
 
-  var onSubmitButtonMousedown = function (evt) {
+  var onAdFormSubmit = function (evt) {
     var isFormCorrect = validateForm();
+    window.backend.load(window.map.onSuccess, onError);
 
     if (isFormCorrect) {
       evt.preventDefault();
@@ -112,7 +113,7 @@
   };
 
   window.form = {
-    onSubmitButtonMousedown: onSubmitButtonMousedown,
+    onAdFormSubmit: onAdFormSubmit,
     onCheckInInputChange: onCheckInInputChange,
     onCheckOutInputChange: onCheckOutInputChange
   };
