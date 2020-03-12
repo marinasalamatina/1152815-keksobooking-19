@@ -19,8 +19,6 @@
   var adFormCheckout = adForm.querySelector('#timeout');
   var adFormCheckin = adForm.querySelector('#timein');
 
-  var listMapPins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
-
   var mapPinMain = document.querySelector('.map__pin--main');
   var mainPinImage = mapPinMain.querySelector('img');
   var rectMainPin = mainPinImage.getBoundingClientRect();
@@ -182,6 +180,8 @@
   };
 
   var deactivateMap = function () {
+    var listMapPins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
+
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
     adFormFieldsets.forEach(function (fieldset) {
