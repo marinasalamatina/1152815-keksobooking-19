@@ -209,6 +209,7 @@
 
   window.map = {
     deactivateMap: deactivateMap,
-    getMainPinCoordinates: getMainPinCoordinates
+    getMainPinCoordinates: getMainPinCoordinates,
+    pinLocations: pinLocations
   };
 })();
