@@ -3,7 +3,9 @@
 (function () {
   var MAX_PRICENIGHT = 1000000;
 
+  var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
+  var adFormAddress = adForm.querySelector('#address');
   var adFormCheckin = adForm.querySelector('#timein');
   var adFormCheckout = adForm.querySelector('#timeout');
   var adFormPrice = adForm.querySelector('#price');
@@ -21,7 +23,6 @@
 
   var resetForm = function () {
     adForm.reset();
-    window.map.activateMap();
   };
 
   var removeErrorPopup = function () {
@@ -41,6 +42,13 @@
     }
   };
 
+  var removeSuccessMessage = function () {
+    successPopup.remove();
+    document.removeEventListener('click', onSuccessMessageClick);
+    document.removeEventListener('keydown', onSuccessMessageKeyPress);
+    adFormAddress.value = window.map.pinLocations;
+  };
+
   var onSuccessMessageClick = function () {
     removeSuccessMessage();
   };
@@ -49,12 +57,6 @@
     if (evt.key === 'Escape') {
       removeSuccessMessage();
     }
-  };
-
-  var removeSuccessMessage = function () {
-    successPopup.remove();
-    document.removeEventListener('click', onSuccessMessageClick);
-    document.removeEventListener('keydown', onSuccessMessageKeyPress);
   };
 
   var onCheckInInputChange = function (evt) {
@@ -102,7 +104,7 @@
 
   var displayErrorPopup = function (message) {
     errorMessage.textContent = message;
-    document.main.appendChild(errorPopup);
+    main.appendChild(errorPopup);
 
     errorButton.addEventListener('click', onErrorButtonClick);
     errorButton.addEventListener('keydown', onErrorButtonKeyPress);
@@ -118,8 +120,13 @@
     }
   };
 
+  var getLocations = function () {
+    adFormAddress.value = window.map.pinLocations;
+  };
+
   var onAdFormResetClick = function () {
     resetForm();
+    getLocations();
   };
 
   window.form = {

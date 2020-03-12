@@ -147,7 +147,6 @@
     });
 
     adFormAddress.setAttribute('readonly', '');
-    adFormAddress.value = pinLocations;
 
     adFormCheckin.addEventListener('change', function () {
       window.form.onCheckInInputChange(window.event);
@@ -210,6 +209,6 @@
 
   window.map = {
     deactivateMap: deactivateMap,
-    getMainPinCoordinates: getMainPinCoordinates,
+    getMainPinCoordinates: getMainPinCoordinates
   };
 })();
