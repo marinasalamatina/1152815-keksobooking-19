@@ -14,6 +14,7 @@
 
   var adForm = document.querySelector('.ad-form');
   var adFormSubmit = adForm.querySelector('.ad-form__submit');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
   var adFormAddress = adForm.querySelector('#address');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
   var adFormCheckout = adForm.querySelector('#timeout');
@@ -62,7 +63,7 @@
 
   var onErrorButtonKeyPress = function (evt) {
     evt.preventDefault();
-    if (evt.key === 'Enter' || evt.key === 'Escape') {
+    if (evt.key === 'Escape') {
       removeErrorMessage();
     }
   };
@@ -124,7 +125,7 @@
 
   var displayErrorPopup = function (message) {
     errorMessage.textContent = message;
-    document.body.appendChild(errorPopup);
+    document.main.appendChild(errorPopup);
 
     errorButton.addEventListener('click', onErrorButtonClick);
     errorButton.addEventListener('keydown', onErrorButtonKeyPress);
@@ -158,6 +159,7 @@
 
     adForm.addEventListener('submit', window.form.onAdFormSubmit);
     adFormSubmit.addEventListener('click', window.form.onAdFormSubmit);
+    adFormReset.addEventListener('click', window.form.onAdFormResetClick);
 
     window.backend.load(displayPins, displayErrorPopup);
   };
@@ -198,7 +200,8 @@
     mapPinMain.addEventListener('keydown', onPinMainEnterKeydown);
 
     adForm.removeEventListener('submit', window.form.onAdFormSubmit);
-    adFormSubmit.removeEventListener('click', window.form.onAdFormSubmit);
+    adFormSubmit.removeEventListener('click', window.form.onAdFormSubmitClick);
+    adFormReset.removeEventListener('click', window.form.onAdFormResetClick);
 
     adFormAddress.value = pinLocations;
   };
@@ -206,6 +209,7 @@
   deactivateMap();
 
   window.map = {
-    deactivateMap: deactivateMap
+    deactivateMap: deactivateMap,
+    getMainPinCoordinates: getMainPinCoordinates,
   };
 })();

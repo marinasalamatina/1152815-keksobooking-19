@@ -19,6 +19,11 @@
   var errorMessage = errorPopup.querySelector('.error__message');
   var errorButton = errorPopup.querySelector('.error__button');
 
+  var resetForm = function () {
+    adForm.reset();
+    window.map.activateMap();
+  };
+
   var removeErrorPopup = function () {
     errorPopup.remove();
     errorButton.removeEventListener('click', onErrorButtonClick);
@@ -31,15 +36,9 @@
 
   var onErrorButtonKeyPress = function (evt) {
     evt.preventDefault();
-    if (evt.key === 'Enter' || evt.key === 'Escape') {
+    if (evt.key === 'Escape') {
       removeErrorPopup();
     }
-  };
-
-  var removeSuccessMessage = function () {
-    successPopup.remove();
-    document.removeEventListener('click', onSuccessMessageClick);
-    document.removeEventListener('keydown', onSuccessMessageKeyPress);
   };
 
   var onSuccessMessageClick = function () {
@@ -47,9 +46,15 @@
   };
 
   var onSuccessMessageKeyPress = function (evt) {
-    if (evt.key === 'Enter' || evt.key === 'Escape') {
+    if (evt.key === 'Escape') {
       removeSuccessMessage();
     }
+  };
+
+  var removeSuccessMessage = function () {
+    successPopup.remove();
+    document.removeEventListener('click', onSuccessMessageClick);
+    document.removeEventListener('keydown', onSuccessMessageKeyPress);
   };
 
   var onCheckInInputChange = function (evt) {
@@ -92,19 +97,19 @@
     document.addEventListener('click', onSuccessMessageClick);
     document.addEventListener('keydown', onSuccessMessageKeyPress);
     window.map.deactivateMap();
-    adForm.reset();
+    resetForm();
   };
 
   var displayErrorPopup = function (message) {
     errorMessage.textContent = message;
-    document.body.appendChild(errorPopup);
+    document.main.appendChild(errorPopup);
 
     errorButton.addEventListener('click', onErrorButtonClick);
     errorButton.addEventListener('keydown', onErrorButtonKeyPress);
     document.addEventListener('keydown', onErrorButtonKeyPress);
   };
 
-  var onAdFormSubmit = function (evt) {
+  var onAdFormSubmitClick = function (evt) {
     var isFormCorrect = validateForm();
 
     if (isFormCorrect) {
@@ -113,9 +118,14 @@
     }
   };
 
+  var onAdFormResetClick = function () {
+    resetForm();
+  };
+
   window.form = {
-    onAdFormSubmit: onAdFormSubmit,
+    onAdFormSubmitClick: onAdFormSubmitClick,
     onCheckInInputChange: onCheckInInputChange,
-    onCheckOutInputChange: onCheckOutInputChange
+    onCheckOutInputChange: onCheckOutInputChange,
+    onAdFormResetClick: onAdFormResetClick
   };
 })();
