@@ -53,7 +53,7 @@
     errorPopup.remove();
     errorButton.removeEventListener('click', onErrorButtonClick);
     errorButton.removeEventListener('keydown', onErrorButtonKeyPress);
-    window.backend.load(onSuccess, onError);
+    window.backend.load(displayPins, displayErrorPopup);
   };
 
   var onErrorButtonClick = function () {
@@ -122,7 +122,7 @@
     document.removeEventListener('mouseup', onDocumentMouseup);
   };
 
-  var onError = function (message) {
+  var displayErrorPopup = function (message) {
     errorMessage.textContent = message;
     document.body.appendChild(errorPopup);
 
@@ -131,7 +131,7 @@
     document.addEventListener('keydown', onErrorButtonKeyPress);
   };
 
-  var onSuccess = function (cards) {
+  var displayPins = function (cards) {
     var pins = createPins(cards, ADS_NUMBER);
     mapPins.appendChild(pins);
   };
@@ -159,7 +159,7 @@
     adForm.addEventListener('submit', window.form.onAdFormSubmit);
     adFormSubmit.addEventListener('click', window.form.onAdFormSubmit);
 
-    window.backend.load(onSuccess, onError);
+    window.backend.load(displayPins, displayErrorPopup);
   };
 
   var onPinMainMousedown = function (evtMousedown) {
@@ -205,7 +205,6 @@
   deactivateMap();
 
   window.map = {
-    deactivateMap: deactivateMap,
-    onSuccess: onSuccess
+    deactivateMap: deactivateMap
   };
 })();

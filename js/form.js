@@ -87,14 +87,14 @@
     return isValid;
   };
 
-  var onLoad = function () {
+  var displaySuccessPopup = function () {
     document.body.appendChild(successPopup);
     document.addEventListener('click', onSuccessMessageClick);
     document.addEventListener('keydown', onSuccessMessageKeyPress);
     window.map.deactivateMap();
   };
 
-  var onError = function (message) {
+  var displayErrorPopup = function (message) {
     errorMessage.textContent = message;
     document.body.appendChild(errorPopup);
 
@@ -108,7 +108,7 @@
 
     if (isFormCorrect) {
       evt.preventDefault();
-      window.backend.save(new FormData(adForm), onLoad, onError);
+      window.backend.save(new FormData(adForm), displaySuccessPopup, displayErrorPopup);
     }
   };
 
