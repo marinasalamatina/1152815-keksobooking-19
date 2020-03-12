@@ -157,8 +157,8 @@
       window.form.onCheckOutInputChange(window.event);
     });
 
-    adForm.addEventListener('submit', window.form.onAdFormSubmit);
-    adFormSubmit.addEventListener('click', window.form.onAdFormSubmit);
+    adForm.addEventListener('submit', window.form.onAdFormSubmitClick);
+    adFormSubmit.addEventListener('click', window.form.onAdFormSubmitClick);
     adFormReset.addEventListener('click', window.form.onAdFormResetClick);
 
     window.backend.load(displayPins, displayErrorPopup);
@@ -199,7 +199,7 @@
     mapPinMain.addEventListener('mousedown', onPinMainMousedown);
     mapPinMain.addEventListener('keydown', onPinMainEnterKeydown);
 
-    adForm.removeEventListener('submit', window.form.onAdFormSubmit);
+    adForm.removeEventListener('submit', window.form.onAdFormSubmitClick);
     adFormSubmit.removeEventListener('click', window.form.onAdFormSubmitClick);
     adFormReset.removeEventListener('click', window.form.onAdFormResetClick);
 
