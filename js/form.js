@@ -92,6 +92,7 @@
     document.addEventListener('click', onSuccessMessageClick);
     document.addEventListener('keydown', onSuccessMessageKeyPress);
     window.map.deactivateMap();
+    adForm.reset();
   };
 
   var displayErrorPopup = function (message) {
