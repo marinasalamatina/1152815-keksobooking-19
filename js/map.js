@@ -10,6 +10,7 @@
 
   var map = document.querySelector('.map');
   var mapLeft = map.getBoundingClientRect().left;
+  var filtersContainer = map.querySelector('.map__filters-container');
   var mapPins = document.querySelector('.map__pins');
 
   var adForm = document.querySelector('.ad-form');
@@ -132,9 +133,30 @@
     document.addEventListener('keydown', onErrorButtonKeyPress);
   };
 
-  var displayPins = function (cards) {
-    var pins = createPins(cards, ADS_NUMBER);
+  var setMapPins = function (cards) {
+    var pins = createPins(createPins(cards.slice(0, ADS_NUMBER)));
+    var pinsWithoutMainPin = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+    if (pinsWithoutMainPin) {
+      pinsWithoutMainPin.forEach(function (element) {
+        mapPins.removeChild(element);
+      });
+    }
     mapPins.appendChild(pins);
+  };
+
+  var onFiltersContainerChange = window.debounce.debounce(function (cards) {
+    setMapPins(window.filter.checkFilters(cards));
+  });
+
+  var activateFilters = function (cards) {
+    filtersContainer.addEventListener('change', function () {
+      onFiltersContainerChange(cards);
+    });
+  };
+
+  var displayPins = function (cards) {
+    activateFilters(cards);
+    setMapPins(cards);
   };
 
   var activateMap = function () {
