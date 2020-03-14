@@ -62,7 +62,7 @@
     var popupClose = card.querySelector('.popup__close');
 
     var closePopup = function () {
-      if (!card) {
+      if (card) {
         map.removeChild(card);
       }
     };

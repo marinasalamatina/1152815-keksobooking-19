@@ -6,7 +6,7 @@
   var PIN_MAIN_MAX_Y = 630;
 
   var LEFT_BUTTON_MOUSE = 0;
-  var ADS_NUMBER = 8;
+  var ADS_NUMBER = 5;
 
   var map = document.querySelector('.map');
   var mapLeft = map.getBoundingClientRect().left;
@@ -69,13 +69,13 @@
     }
   };
 
-  var createPins = function (cards, number) {
+  var createPins = function (cards) {
     var pins = document.createDocumentFragment();
 
-    for (var i = 0; i < number; i += 1) {
-      var pin = window.pin.createPin(cards[i]);
-      pins.appendChild(pin);
-    }
+    cards.forEach(function (element) {
+      pins.appendChild(window.pin.createPin(element));
+    });
+
     return pins;
   };
 
@@ -134,7 +134,7 @@
   };
 
   var setMapPins = function (cards) {
-    var pins = createPins(createPins(cards.slice(0, ADS_NUMBER)));
+    var pins = createPins(cards.slice(0, ADS_NUMBER));
     var pinsWithoutMainPin = map.querySelectorAll('.map__pin:not(.map__pin--main)');
     if (pinsWithoutMainPin) {
       pinsWithoutMainPin.forEach(function (element) {
@@ -144,7 +144,7 @@
     mapPins.appendChild(pins);
   };
 
-  var onFiltersContainerChange = window.debounce.debounce(function (cards) {
+  var onFiltersContainerChange = window.debounce(function (cards) {
     setMapPins(window.filter.checkFilters(cards));
   });
 
