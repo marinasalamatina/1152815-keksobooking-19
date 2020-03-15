@@ -144,6 +144,7 @@
   };
 
   var onFiltersContainerChange = window.debounce(function (cards) {
+    window.card.closePopup();
     setMapPins(window.filter.checkFilters(cards));
   });
 
@@ -152,7 +153,6 @@
     window.utils.getBlockElements(filters, false);
     filtersContainer.addEventListener('change', function () {
       onFiltersContainerChange(cards);
-      window.card.closePopup();
     });
   };
 

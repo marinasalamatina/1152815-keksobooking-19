@@ -85,6 +85,7 @@
   };
 
   var displaySuccessPopup = function () {
+    window.card.closePopup();
     resetFormAndFilters();
     document.body.appendChild(successPopup);
     document.addEventListener('click', onSuccessMessageClick);
