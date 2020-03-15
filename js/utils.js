@@ -1,20 +1,13 @@
 'use strict';
 
 (function () {
-  var getBlockElements = function (array) {
-    array.forEach(function (element) {
-      element.setAttribute('disabled', true);
-    });
-  };
-
-  var getUnblockElements = function (array) {
-    array.forEach(function (element) {
-      element.removeAttribute('disabled');
+  var getBlockElements = function (elements, isDisabled) {
+    elements.forEach(function (element) {
+      element.disabled = isDisabled;
     });
   };
 
   window.utils = {
-    getBlockElements: getBlockElements,
-    getUnblockElements: getUnblockElements
+    getBlockElements: getBlockElements
   };
 })();

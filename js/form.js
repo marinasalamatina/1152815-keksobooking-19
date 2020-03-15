@@ -5,6 +5,7 @@
 
   var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
+
   var adFormSubmit = adForm.querySelector('.ad-form__submit');
   var adFormReset = adForm.querySelector('.ad-form__reset');
   var adFormTitle = adForm.querySelector('#title');
@@ -16,6 +17,11 @@
   var adFormType = adForm.querySelector('#type');
   var adFormCapacity = adForm.querySelector('#capacity');
   var adFormRooms = adForm.querySelector('#room_number');
+
+  var filtersContainer = document.querySelector('.map__filters-container');
+  var featuresContainer = filtersContainer.querySelector('.map__features');
+  var filtersAll = filtersContainer.querySelectorAll('.map__filter');
+  var featuresAll = featuresContainer.querySelectorAll('.map__checkbox');
 
   var successPopupTemplate = document.querySelector('#success ').content.querySelector('.success');
   var successPopup = successPopupTemplate.cloneNode(true);
@@ -59,7 +65,27 @@
     }
   };
 
+  var resetFormAndFilters = function () {
+    var validityMessage = '';
+    window.map.deactivateMap();
+    adFormTitle.setCustomValidity(validityMessage);
+    adFormPrice.setCustomValidity(validityMessage);
+    adFormType.setCustomValidity(validityMessage);
+    filtersAll.forEach(function (element) {
+      element.value = 'any';
+    });
+    featuresAll.forEach(function (element) {
+      element.checked = false;
+    });
+  };
+
+  var onAdFormResetClick = function () {
+    resetFormAndFilters();
+    adFormReset.removeEventListener('click', onAdFormResetClick);
+  };
+
   var displaySuccessPopup = function () {
+    resetFormAndFilters();
     document.body.appendChild(successPopup);
     document.addEventListener('click', onSuccessMessageClick);
     document.addEventListener('keydown', onSuccessMessageKeyPress);
@@ -73,16 +99,6 @@
     errorButton.addEventListener('click', onErrorButtonClick);
     errorButton.addEventListener('keydown', onErrorButtonKeyPress);
     document.addEventListener('keydown', onErrorButtonKeyPress);
-  };
-
-  var onAdFormResetClick = function () {
-    window.map.deactivateMap();
-    var validityMessage = '';
-    adFormTitle.setCustomValidity(validityMessage);
-    adFormPrice.setCustomValidity(validityMessage);
-    adFormType.setCustomValidity(validityMessage);
-
-    adFormReset.removeEventListener('click', onAdFormResetClick);
   };
 
   var validitePrice = function () {
@@ -111,7 +127,7 @@
     return isValid;
   };
 
-  var onAdFormSubmitClick = function (evt) {
+  var sendForm = function (evt) {
     var isFormCorrect = validateForm();
 
     if (isFormCorrect) {
@@ -119,6 +135,16 @@
       window.backend.save(new FormData(adForm), displaySuccessPopup, displayErrorPopup);
     }
     return;
+  };
+
+  var onAdFormSubmitKeydown = function (evt) {
+    if (evt.key === 'Enter') {
+      sendForm(evt);
+    }
+  };
+
+  var onAdFormSubmitClick = function (evt) {
+    sendForm(evt);
   };
 
   var onAdFormCheckInChange = function (evt) {
@@ -133,9 +159,9 @@
     adForm.classList.add('ad-form--disabled');
     adFormCheckin.removeEventListener('change', onAdFormCheckInChange);
     adFormCheckout.removeEventListener('change', onAdFormCheckOutChange);
-    adForm.removeEventListener('click', onAdFormSubmitClick);
+    adForm.removeEventListener('click', onAdFormSubmitKeydown);
     adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
-    window.utils.getBlockElements(adFormFieldsets);
+    window.utils.getBlockElements(adFormFieldsets, true);
     adForm.reset();
   };
 
@@ -144,10 +170,10 @@
     adFormAddress.setAttribute('readonly', '');
     adFormCheckin.addEventListener('change', onAdFormCheckInChange);
     adFormCheckout.addEventListener('change', onAdFormCheckOutChange);
-    adForm.addEventListener('click', onAdFormSubmitClick);
+    adForm.addEventListener('keydown', onAdFormSubmitKeydown);
     adFormSubmit.addEventListener('click', onAdFormSubmitClick);
-    window.utils.getUnblockElements(adFormFieldsets);
     adFormReset.addEventListener('click', onAdFormResetClick);
+    window.utils.getBlockElements(adFormFieldsets, false);
   };
 
   window.form = {

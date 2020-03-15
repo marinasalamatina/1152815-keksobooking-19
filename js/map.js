@@ -8,6 +8,7 @@
   var LEFT_BUTTON_MOUSE = 0;
   var ADS_NUMBER = 5;
 
+  var main = document.querySelector('main');
   var map = document.querySelector('.map');
   var mapLeft = map.getBoundingClientRect().left;
   var filtersContainer = map.querySelector('.map__filters-container');
@@ -124,7 +125,7 @@
 
   var displayErrorPopup = function (message) {
     errorMessage.textContent = message;
-    document.main.appendChild(errorPopup);
+    main.appendChild(errorPopup);
 
     errorButton.addEventListener('click', onErrorButtonClick);
     errorButton.addEventListener('keydown', onErrorButtonKeyPress);
@@ -147,8 +148,8 @@
   });
 
   var activateFilters = function (cards) {
-    window.utils.getUnblockElements(filters);
-    window.utils.getUnblockElements(features);
+    window.utils.getBlockElements(features, false);
+    window.utils.getBlockElements(filters, false);
     filtersContainer.addEventListener('change', function () {
       onFiltersContainerChange(cards);
       window.card.closePopup();
@@ -165,8 +166,6 @@
     map.classList.remove('map--faded');
     window.form.activateForm();
     window.backend.load(displayPins, displayErrorPopup);
-    window.utils.getBlockElements(filters);
-    window.utils.getBlockElements(features);
   };
 
   var onPinMainMousedown = function (evtMousedown) {
@@ -194,6 +193,9 @@
         mapPins.removeChild(element);
       });
     }
+
+    window.utils.getBlockElements(features, true);
+    window.utils.getBlockElements(filters, true);
 
     map.classList.add('map--faded');
     window.form.deactivateForm();
