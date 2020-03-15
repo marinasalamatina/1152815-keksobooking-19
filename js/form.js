@@ -5,6 +5,10 @@
 
   var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
+  var adFormSubmit = adForm.querySelector('.ad-form__submit');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
+  var adFormTitle = adForm.querySelector('#title');
+  var adFormFieldsets = adForm.querySelectorAll('fieldset');
   var adFormAddress = adForm.querySelector('#address');
   var adFormCheckin = adForm.querySelector('#timein');
   var adFormCheckout = adForm.querySelector('#timeout');
@@ -20,10 +24,6 @@
   var errorPopup = windowPopupTemplate.cloneNode(true);
   var errorMessage = errorPopup.querySelector('.error__message');
   var errorButton = errorPopup.querySelector('.error__button');
-
-  var resetForm = function () {
-    adForm.reset();
-  };
 
   var removeErrorPopup = function () {
     errorPopup.remove();
@@ -59,12 +59,30 @@
     }
   };
 
-  var onCheckInInputChange = function (evt) {
-    adFormCheckout.value = evt.currentTarget.value;
+  var displaySuccessPopup = function () {
+    document.body.appendChild(successPopup);
+    document.addEventListener('click', onSuccessMessageClick);
+    document.addEventListener('keydown', onSuccessMessageKeyPress);
+    window.map.deactivateMap();
   };
 
-  var onCheckOutInputChange = function (evt) {
-    adFormCheckin.value = evt.currentTarget.value;
+  var displayErrorPopup = function (message) {
+    errorMessage.textContent = message;
+    main.appendChild(errorPopup);
+
+    errorButton.addEventListener('click', onErrorButtonClick);
+    errorButton.addEventListener('keydown', onErrorButtonKeyPress);
+    document.addEventListener('keydown', onErrorButtonKeyPress);
+  };
+
+  var onAdFormResetClick = function () {
+    window.map.deactivateMap();
+    var validityMessage = '';
+    adFormTitle.setCustomValidity(validityMessage);
+    adFormPrice.setCustomValidity(validityMessage);
+    adFormType.setCustomValidity(validityMessage);
+
+    adFormReset.removeEventListener('click', onAdFormResetClick);
   };
 
   var validitePrice = function () {
@@ -72,7 +90,6 @@
     var typeValue = window.card.offerTypeList[adFormTypeValue];
     var minPrice = typeValue.minPrice;
     var customPrice = Number(adFormPrice.value);
-    adFormPrice.placeholder = minPrice;
 
     var validityMessagePrice = (customPrice < minPrice) ? 'Рекомендуемая цена за ночь от ' + minPrice + ' до ' + MAX_PRICENIGHT : '';
     adFormPrice.setCustomValidity(validityMessagePrice);
@@ -94,23 +111,6 @@
     return isValid;
   };
 
-  var displaySuccessPopup = function () {
-    document.body.appendChild(successPopup);
-    document.addEventListener('click', onSuccessMessageClick);
-    document.addEventListener('keydown', onSuccessMessageKeyPress);
-    window.map.deactivateMap();
-    resetForm();
-  };
-
-  var displayErrorPopup = function (message) {
-    errorMessage.textContent = message;
-    main.appendChild(errorPopup);
-
-    errorButton.addEventListener('click', onErrorButtonClick);
-    errorButton.addEventListener('keydown', onErrorButtonKeyPress);
-    document.addEventListener('keydown', onErrorButtonKeyPress);
-  };
-
   var onAdFormSubmitClick = function (evt) {
     var isFormCorrect = validateForm();
 
@@ -118,21 +118,45 @@
       evt.preventDefault();
       window.backend.save(new FormData(adForm), displaySuccessPopup, displayErrorPopup);
     }
+    return;
   };
 
-  var getLocations = function () {
-    adFormAddress.value = window.map.pinLocations;
+  var onAdFormCheckInChange = function (evt) {
+    adFormCheckout.value = evt.currentTarget.value;
   };
 
-  var onAdFormResetClick = function () {
-    resetForm();
-    getLocations();
+  var onAdFormCheckOutChange = function (evt) {
+    adFormCheckin.value = evt.currentTarget.value;
+  };
+
+  var deactivateForm = function () {
+    adForm.classList.add('ad-form--disabled');
+    adFormCheckin.removeEventListener('change', onAdFormCheckInChange);
+    adFormCheckout.removeEventListener('change', onAdFormCheckOutChange);
+    adForm.removeEventListener('click', onAdFormSubmitClick);
+    adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
+    adFormFieldsets.forEach(function (fieldset) {
+      fieldset.setAttribute('disabled', true);
+    });
+    adForm.reset();
+  };
+
+  var activateForm = function () {
+    adForm.classList.remove('ad-form--disabled');
+    adFormAddress.setAttribute('readonly', '');
+    adFormCheckin.addEventListener('change', onAdFormCheckInChange);
+    adFormCheckout.addEventListener('change', onAdFormCheckOutChange);
+    adForm.addEventListener('click', onAdFormSubmitClick);
+    adFormSubmit.addEventListener('click', onAdFormSubmitClick);
+    adFormFieldsets.forEach(function (fieldset) {
+      fieldset.removeAttribute('disabled');
+    });
+    adFormReset.addEventListener('click', onAdFormResetClick);
   };
 
   window.form = {
     onAdFormSubmitClick: onAdFormSubmitClick,
-    onCheckInInputChange: onCheckInInputChange,
-    onCheckOutInputChange: onCheckOutInputChange,
-    onAdFormResetClick: onAdFormResetClick
+    deactivateForm: deactivateForm,
+    activateForm: activateForm
   };
 })();

@@ -14,12 +14,7 @@
   var mapPins = document.querySelector('.map__pins');
 
   var adForm = document.querySelector('.ad-form');
-  var adFormSubmit = adForm.querySelector('.ad-form__submit');
-  var adFormReset = adForm.querySelector('.ad-form__reset');
   var adFormAddress = adForm.querySelector('#address');
-  var adFormFieldsets = adForm.querySelectorAll('fieldset');
-  var adFormCheckout = adForm.querySelector('#timeout');
-  var adFormCheckin = adForm.querySelector('#timein');
 
   var mapPinMain = document.querySelector('.map__pin--main');
   var mainPinImage = mapPinMain.querySelector('img');
@@ -161,27 +156,8 @@
 
   var activateMap = function () {
     mapPinMain.removeEventListener('keydown', onPinMainEnterKeydown);
-
     map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    adFormFieldsets.forEach(function (fieldset) {
-      fieldset.removeAttribute('disabled');
-    });
-
-    adFormAddress.setAttribute('readonly', '');
-
-    adFormCheckin.addEventListener('change', function () {
-      window.form.onCheckInInputChange(window.event);
-    });
-
-    adFormCheckout.addEventListener('change', function () {
-      window.form.onCheckOutInputChange(window.event);
-    });
-
-    adForm.addEventListener('submit', window.form.onAdFormSubmitClick);
-    adFormSubmit.addEventListener('click', window.form.onAdFormSubmitClick);
-    adFormReset.addEventListener('click', window.form.onAdFormResetClick);
-
+    window.form.activateForm();
     window.backend.load(displayPins, displayErrorPopup);
   };
 
@@ -205,24 +181,17 @@
   var deactivateMap = function () {
     var listMapPins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
 
-    map.classList.add('map--faded');
-    adForm.classList.add('ad-form--disabled');
-    adFormFieldsets.forEach(function (fieldset) {
-      fieldset.setAttribute('disabled', true);
-    });
-
     if (listMapPins) {
       listMapPins.forEach(function (element) {
         mapPins.removeChild(element);
       });
     }
 
+    map.classList.add('map--faded');
+    window.form.deactivateForm();
+
     mapPinMain.addEventListener('mousedown', onPinMainMousedown);
     mapPinMain.addEventListener('keydown', onPinMainEnterKeydown);
-
-    adForm.removeEventListener('submit', window.form.onAdFormSubmitClick);
-    adFormSubmit.removeEventListener('click', window.form.onAdFormSubmitClick);
-    adFormReset.removeEventListener('click', window.form.onAdFormResetClick);
 
     adFormAddress.value = pinLocations;
   };
@@ -231,7 +200,6 @@
 
   window.map = {
     deactivateMap: deactivateMap,
-    getMainPinCoordinates: getMainPinCoordinates,
     pinLocations: pinLocations
   };
 })();
