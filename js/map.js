@@ -11,6 +11,9 @@
   var map = document.querySelector('.map');
   var mapLeft = map.getBoundingClientRect().left;
   var filtersContainer = map.querySelector('.map__filters-container');
+  var filters = filtersContainer.querySelectorAll('.map__filter');
+  var featuresContainer = filtersContainer.querySelector('.map__features');
+  var features = featuresContainer.querySelectorAll('.map__checkbox');
   var mapPins = document.querySelector('.map__pins');
 
   var adForm = document.querySelector('.ad-form');
@@ -144,6 +147,12 @@
   });
 
   var activateFilters = function (cards) {
+    filters.forEach(function (element) {
+      element.removeAttribute('disabled');
+    });
+    features.forEach(function (element) {
+      element.removeAttribute('disabled');
+    });
     filtersContainer.addEventListener('change', function () {
       onFiltersContainerChange(cards);
       window.card.closePopup();
@@ -160,6 +169,12 @@
     map.classList.remove('map--faded');
     window.form.activateForm();
     window.backend.load(displayPins, displayErrorPopup);
+    filters.forEach(function (element) {
+      element.setAttribute('disabled', true);
+    });
+    features.forEach(function (element) {
+      element.setAttribute('disabled', true);
+    });
   };
 
   var onPinMainMousedown = function (evtMousedown) {
