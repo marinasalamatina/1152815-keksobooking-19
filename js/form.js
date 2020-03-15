@@ -135,9 +135,7 @@
     adFormCheckout.removeEventListener('change', onAdFormCheckOutChange);
     adForm.removeEventListener('click', onAdFormSubmitClick);
     adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
-    adFormFieldsets.forEach(function (fieldset) {
-      fieldset.setAttribute('disabled', true);
-    });
+    window.utils.getBlockElements(adFormFieldsets);
     adForm.reset();
   };
 
@@ -148,9 +146,7 @@
     adFormCheckout.addEventListener('change', onAdFormCheckOutChange);
     adForm.addEventListener('click', onAdFormSubmitClick);
     adFormSubmit.addEventListener('click', onAdFormSubmitClick);
-    adFormFieldsets.forEach(function (fieldset) {
-      fieldset.removeAttribute('disabled');
-    });
+    window.utils.getUnblockElements(adFormFieldsets);
     adFormReset.addEventListener('click', onAdFormResetClick);
   };
 

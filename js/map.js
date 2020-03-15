@@ -147,12 +147,8 @@
   });
 
   var activateFilters = function (cards) {
-    filters.forEach(function (element) {
-      element.removeAttribute('disabled');
-    });
-    features.forEach(function (element) {
-      element.removeAttribute('disabled');
-    });
+    window.utils.getUnblockElements(filters);
+    window.utils.getUnblockElements(features);
     filtersContainer.addEventListener('change', function () {
       onFiltersContainerChange(cards);
       window.card.closePopup();
@@ -169,12 +165,8 @@
     map.classList.remove('map--faded');
     window.form.activateForm();
     window.backend.load(displayPins, displayErrorPopup);
-    filters.forEach(function (element) {
-      element.setAttribute('disabled', true);
-    });
-    features.forEach(function (element) {
-      element.setAttribute('disabled', true);
-    });
+    window.utils.getBlockElements(filters);
+    window.utils.getBlockElements(features);
   };
 
   var onPinMainMousedown = function (evtMousedown) {
