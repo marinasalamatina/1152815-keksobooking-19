@@ -7,25 +7,6 @@
   var card = mapCard.cloneNode(true);
   var popupClose = card.querySelector('.popup__close');
 
-  var offerTypeList = {
-    'bungalo': {
-      name: 'Бунгало',
-      minPrice: 0
-    },
-    'flat': {
-      name: 'Квартира',
-      minPrice: 1000
-    },
-    'house': {
-      name: 'Дом',
-      minPrice: 5000
-    },
-    'palace': {
-      name: 'Дворец',
-      minPrice: 10000
-    }
-  };
-
   var closePopup = function () {
     card.remove();
   };
@@ -73,7 +54,7 @@
     var features = getFeatures(adContent.offer.features);
     var imageFromTemplate = card.querySelector('.popup__photos').querySelector('img');
     var photos = getPhotos(imageFromTemplate, adContent.offer.photos);
-    var type = offerTypeList[adContent.offer.type].name;
+    var type = window.constants.offerTypeList[adContent.offer.type].name;
 
     card.querySelector('.popup__title').textContent = adContent.offer.title;
     card.querySelector('.popup__text--address').textContent = adContent.offer.address;
@@ -99,7 +80,6 @@
 
   window.card = {
     createCard: createCard,
-    offerTypeList: offerTypeList,
     closePopup: closePopup
   };
 })();

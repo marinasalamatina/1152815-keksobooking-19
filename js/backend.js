@@ -1,18 +1,13 @@
 'use strict';
 
 window.backend = (function () {
-  var SAVE_URL = 'https://js.dump.academy/keksobooking';
-  var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
-  var MAX_TIMEOUT = 10000;
-  var SUCCESS_CODE = 200;
-
   var createXhr = function (xhr, url, type, onLoad, onError) {
     xhr.responseType = 'json';
-    xhr.timeout = MAX_TIMEOUT;
+    xhr.timeout = window.constants.backendParameters.MAX_TIMEOUT;
     xhr.open(type, url);
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === SUCCESS_CODE) {
+      if (xhr.status === window.constants.backendParameters.SUCCESS_CODE) {
         onLoad(xhr.response);
       } else {
         onError('Код ошибки: ' + xhr.status + ' ' + xhr.statusText);
@@ -29,13 +24,13 @@ window.backend = (function () {
   return {
     save: function (data, onLoad, onError) {
       var xhr = new XMLHttpRequest();
-      createXhr(xhr, SAVE_URL, 'POST', onLoad, onError);
+      createXhr(xhr, window.constants.backendParameters.SAVE_URL, 'POST', onLoad, onError);
       xhr.send(data);
     },
 
     load: function (onLoad, onError) {
       var xhr = new XMLHttpRequest();
-      createXhr(xhr, LOAD_URL, 'GET', onLoad, onError);
+      createXhr(xhr, window.constants.backendParameters.LOAD_URL, 'GET', onLoad, onError);
       xhr.send();
     }
   };

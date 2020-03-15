@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var MAX_PRICENIGHT = 1000000;
-
   var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
 
@@ -79,6 +77,14 @@
     });
   };
 
+  var onAdFormCheckInChange = function (evt) {
+    adFormCheckout.value = evt.currentTarget.value;
+  };
+
+  var onAdFormCheckOutChange = function (evt) {
+    adFormCheckin.value = evt.currentTarget.value;
+  };
+
   var onAdFormResetClick = function () {
     resetFormAndFilters();
     adFormReset.removeEventListener('click', onAdFormResetClick);
@@ -104,11 +110,11 @@
 
   var validitePrice = function () {
     var adFormTypeValue = adFormType.value;
-    var typeValue = window.card.offerTypeList[adFormTypeValue];
+    var typeValue = window.constants.offerTypeList[adFormTypeValue];
     var minPrice = typeValue.minPrice;
     var customPrice = Number(adFormPrice.value);
 
-    var validityMessagePrice = (customPrice < minPrice) ? 'Рекомендуемая цена за ночь от ' + minPrice + ' до ' + MAX_PRICENIGHT : '';
+    var validityMessagePrice = (customPrice < minPrice) ? 'Рекомендуемая цена за ночь от ' + minPrice + ' до ' + window.constants.MAX_PRICENIGHT : '';
     adFormPrice.setCustomValidity(validityMessagePrice);
 
     return validityMessagePrice;
@@ -146,14 +152,6 @@
 
   var onAdFormSubmitClick = function (evt) {
     sendForm(evt);
-  };
-
-  var onAdFormCheckInChange = function (evt) {
-    adFormCheckout.value = evt.currentTarget.value;
-  };
-
-  var onAdFormCheckOutChange = function (evt) {
-    adFormCheckin.value = evt.currentTarget.value;
   };
 
   var deactivateForm = function () {

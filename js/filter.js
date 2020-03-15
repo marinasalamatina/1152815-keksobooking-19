@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-  var LOW_PRICE = 10000;
-  var HIGH_PRICE = 50000;
-
   var filtersContainer = document.querySelector('.map__filters-container');
 
   var guestsFilter = filtersContainer.querySelector('#housing-guests');
@@ -13,9 +10,9 @@
   var featuresContainer = filtersContainer.querySelector('.map__features');
   var features = featuresContainer.querySelectorAll('.map__checkbox');
 
-  var filterType = function (cards, filter) {
-    return filter.value === 'any' ? cards : cards.filter(function (element) {
-      return filter.value === element.offer.type;
+  var filterRooms = function (cards, filter) {
+    return filter.value === 'any' ? cards : cards.filter(function (card) {
+      return filter.value === card.offer.rooms + '';
     });
   };
 
@@ -23,20 +20,20 @@
     return filter.value === 'any' ? cards : cards.filter(function (card) {
       switch (filter.value) {
         case 'low':
-          return card.offer.price < LOW_PRICE;
+          return card.offer.price < window.constants.filterPrice.LOW_PRICE;
         case 'high':
-          return card.offer.price >= HIGH_PRICE;
+          return card.offer.price >= window.constants.filterPrice.HIGH_PRICE;
         case 'middle':
-          return (card.offer.price >= LOW_PRICE) && (card.offer.price <= HIGH_PRICE);
+          return (card.offer.price >= window.constants.filterPrice.LOW_PRICE) && (card.offer.price <= window.constants.filterPrice.HIGH_PRICE);
         default:
           return true;
       }
     });
   };
 
-  var filterRooms = function (cards, filter) {
-    return filter.value === 'any' ? cards : cards.filter(function (card) {
-      return filter.value === card.offer.rooms + '';
+  var filterType = function (cards, filter) {
+    return filter.value === 'any' ? cards : cards.filter(function (element) {
+      return filter.value === element.offer.type;
     });
   };
 

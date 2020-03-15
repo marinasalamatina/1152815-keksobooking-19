@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var map = document.querySelector('.map');
+  var mapPins = document.querySelector('.map__pins');
+
   var rectPin = document.querySelector('.map__pin').querySelector('img').getBoundingClientRect();
   var imageWidth = rectPin.width;
   var imageHeight = rectPin.height;
@@ -38,7 +41,29 @@
     return pin;
   };
 
+  var createPins = function (cards) {
+    var pins = document.createDocumentFragment();
+
+    cards.forEach(function (element) {
+      pins.appendChild(window.pin.createPin(element));
+    });
+
+    return pins;
+  };
+
+  var setMapPins = function (cards) {
+    var pins = createPins(cards.slice(0, window.constants.pinParameters.ADS_NUMBER));
+    var pinsWithoutMainPin = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+    if (pinsWithoutMainPin) {
+      pinsWithoutMainPin.forEach(function (element) {
+        mapPins.removeChild(element);
+      });
+    }
+    mapPins.appendChild(pins);
+  };
+
   window.pin = {
-    createPin: createPin
+    createPin: createPin,
+    setMapPins: setMapPins
   };
 })();
