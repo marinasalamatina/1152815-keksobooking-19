@@ -146,6 +146,7 @@
   var activateFilters = function (cards) {
     filtersContainer.addEventListener('change', function () {
       onFiltersContainerChange(cards);
+      window.card.closePopup();
     });
   };
 

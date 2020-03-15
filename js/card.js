@@ -2,6 +2,10 @@
 
 (function () {
   var map = document.querySelector('.map');
+  var filtersContainer = map.querySelector('.map__filters-container');
+  var mapCard = document.querySelector('#card').content.querySelector('.map__card');
+  var card = mapCard.cloneNode(true);
+  var popupClose = card.querySelector('.popup__close');
 
   var offerTypeList = {
     'bungalo': {
@@ -19,6 +23,20 @@
     'palace': {
       name: 'Дворец',
       minPrice: 10000
+    }
+  };
+
+  var closePopup = function () {
+    card.remove();
+  };
+
+  var onPopupMousedown = function () {
+    closePopup();
+  };
+
+  var onPopupEscPress = function (evt) {
+    if (evt.key === 'Escape') {
+      closePopup();
     }
   };
 
@@ -47,8 +65,6 @@
   };
 
   var createCard = function (adContent) {
-    var mapCard = document.querySelector('#card').content.querySelector('.map__card');
-    var card = mapCard.cloneNode(true);
     var priceNight = adContent.offer.price + '₽/ночь';
     var capacityRoomsGuests = adContent.offer.rooms + ' комнаты для ' + adContent.offer.guests + ' гостей';
     var popupDescription = card.querySelector('.popup__description');
@@ -58,24 +74,6 @@
     var imageFromTemplate = card.querySelector('.popup__photos').querySelector('img');
     var photos = getPhotos(imageFromTemplate, adContent.offer.photos);
     var type = offerTypeList[adContent.offer.type].name;
-
-    var popupClose = card.querySelector('.popup__close');
-
-    var closePopup = function () {
-      if (card) {
-        map.removeChild(card);
-      }
-    };
-
-    var onPopupMousedown = function () {
-      closePopup();
-    };
-
-    var onPopupEscPress = function (evt) {
-      if (evt.key === 'Escape') {
-        closePopup();
-      }
-    };
 
     card.querySelector('.popup__title').textContent = adContent.offer.title;
     card.querySelector('.popup__text--address').textContent = adContent.offer.address;
@@ -92,11 +90,16 @@
     popupClose.addEventListener('click', onPopupMousedown);
     document.addEventListener('keydown', onPopupEscPress);
 
-    return card;
+    var mapCardCurrentOpen = map.querySelector('.map__card');
+    if (mapCardCurrentOpen) {
+      map.replaceChild(card, mapCardCurrentOpen);
+    }
+    map.insertBefore(card, filtersContainer);
   };
 
   window.card = {
     createCard: createCard,
-    offerTypeList: offerTypeList
+    offerTypeList: offerTypeList,
+    closePopup: closePopup
   };
 })();
