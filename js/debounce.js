@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var removeDebounce = function (callback) {
+  var debounce = function (callback) {
     var lastTimeout = null;
 
     return function () {
@@ -15,5 +15,5 @@
     };
   };
 
-  window.debounce = removeDebounce;
+  window.debounce = debounce;
 })();
