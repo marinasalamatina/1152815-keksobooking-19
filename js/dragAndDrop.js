@@ -21,7 +21,7 @@
     top: pinMainTop
   };
 
-  var getMainPinCoordinates = function (pinX, pinY) {
+  var setCoordinatesMainPin = function (pinX, pinY) {
     var pinLocationX = Math.round(pinX + pinMainHalfWidth);
     var pinLocationY = Math.round(pinY + pinMainHeight);
 
@@ -63,7 +63,7 @@
     mapPinMain.style.left = startCoordinates.left + 'px';
     mapPinMain.style.top = startCoordinates.top + 'px';
 
-    getMainPinCoordinates(startCoordinates.left, startCoordinates.top);
+    setCoordinatesMainPin(startCoordinates.left, startCoordinates.top);
   };
 
   var onDocumentMouseup = function (evtMouseup) {
@@ -91,7 +91,6 @@
   };
 
   window.mouse = {
-    getMainPinCoordinates: getMainPinCoordinates,
     onPinMainMousedown: onPinMainMousedown,
     onPinMainEnterKeydown: onPinMainEnterKeydown
   };
