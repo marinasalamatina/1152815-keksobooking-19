@@ -86,7 +86,9 @@
 
   var onPinMainEnterKeydown = function (evt) {
     if (evt.key === 'Enter') {
-      window.map.activateMap();
+      if (map.classList.contains('map--faded')) {
+        window.map.activateMap();
+      }
     }
   };
 
