@@ -37,14 +37,29 @@
     return ((roomsFilter.value === card.offer.rooms) || (guestsFilter.value === 'any')) ? false : true;
   };
 
-  var filterFeatures = function (card) {
-    features.forEach(function (element) {
-      return (card.offer.features.indexOf(element.value) !== -1) ? false : true;
+  var filterFeature = function (card) {
+    var featuresChecked = [];
+    var featuresFilter = document.querySelector('#housing-features');
+    var featuresInputs = Array.from(featuresFilter.querySelectorAll('input'));
+    for (var i = 0; i < featuresInputs.length; i += 1) {
+      if (featuresInputs[i].checked) {
+        featuresChecked.push(featuresInputs[i].value);
+      }
+    }
+    featuresChecked.every(function (elem) {
+      var cardFeatures = Array.from(card.offer.features);
+      for (var i = 1; i < featuresChecked.length; i += 1) {
+        if (cardFeatures[i] === elem) {
+
+        }
+      }
+       }
+      });
     });
   };
 
   var validateCard = function (card) {
-    return ((!filterType(card)) && (!filterPrice(card)) && (!filterRooms(card)) && (!filterGuests(card)) && (!filterFeatures(card))) ? false : true;
+    return ((!filterType(card)) && (!filterPrice(card)) && (!filterRooms(card)) && (!filterGuests(card)) && (!filterFeature(card))) ? false : true;
   };
 
   var checkFilters = function (cards) {
