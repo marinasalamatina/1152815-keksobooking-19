@@ -20,24 +20,12 @@
   var filtersAll = filtersContainer.querySelectorAll('.map__filter');
   var featuresAll = featuresContainer.querySelectorAll('.map__checkbox');
 
-  var successPopupTemplate = document.querySelector('#success ').content.querySelector('.success');
-  var successPopup = successPopupTemplate.cloneNode(true);
-
-  var removeSuccessMessage = function () {
-    successPopup.remove();
-    document.removeEventListener('click', onSuccessMessageClick);
-    document.removeEventListener('keydown', onSuccessMessageKeyPress);
-    adFormAddress.value = window.map.pinLocations;
+  var onAdFormCheckInChange = function (evt) {
+    adFormCheckout.value = evt.currentTarget.value;
   };
 
-  var onSuccessMessageClick = function () {
-    removeSuccessMessage();
-  };
-
-  var onSuccessMessageKeyPress = function (evt) {
-    if (evt.key === 'Escape') {
-      removeSuccessMessage();
-    }
+  var onAdFormCheckOutChange = function (evt) {
+    adFormCheckin.value = evt.currentTarget.value;
   };
 
   var resetFormAndFilters = function () {
@@ -54,26 +42,9 @@
     });
   };
 
-  var onAdFormCheckInChange = function (evt) {
-    adFormCheckout.value = evt.currentTarget.value;
-  };
-
-  var onAdFormCheckOutChange = function (evt) {
-    adFormCheckin.value = evt.currentTarget.value;
-  };
-
   var onAdFormResetClick = function () {
     resetFormAndFilters();
     adFormReset.removeEventListener('click', onAdFormResetClick);
-  };
-
-  var displaySuccessPopup = function () {
-    window.card.closePopup();
-    resetFormAndFilters();
-    document.body.appendChild(successPopup);
-    document.addEventListener('click', onSuccessMessageClick);
-    document.addEventListener('keydown', onSuccessMessageKeyPress);
-    window.map.deactivateMap();
   };
 
   var validitePrice = function () {
@@ -107,7 +78,7 @@
 
     if (isFormCorrect) {
       evt.preventDefault();
-      window.backend.save(new FormData(adForm), displaySuccessPopup, window.errorPopup.displayErrorPopup);
+      window.backend.save(new FormData(adForm), window.successPopup.displaySuccessPopup, window.errorPopup.displayErrorPopup);
     }
     return;
   };
@@ -144,6 +115,7 @@
   };
 
   window.form = {
+    resetFormAndFilters: resetFormAndFilters,
     onAdFormSubmitClick: onAdFormSubmitClick,
     deactivateForm: deactivateForm,
     activateForm: activateForm
