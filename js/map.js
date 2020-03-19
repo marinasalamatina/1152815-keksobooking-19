@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var main = document.querySelector('main');
   var map = document.querySelector('.map');
   var mapLeft = map.getBoundingClientRect().left;
   var filtersContainer = map.querySelector('.map__filters-container');
@@ -25,38 +24,6 @@
   var pinLocationY = Math.round(pinMainTop + pinMainHeight);
   var pinLocations = pinLocationX + ', ' + pinLocationY;
 
-  var windowPopupTemplate = document.querySelector('#error').content.querySelector('.error');
-  var errorPopup = windowPopupTemplate.cloneNode(true);
-  var errorMessage = errorPopup.querySelector('.error__message');
-  var errorButton = errorPopup.querySelector('.error__button');
-
-  var removeErrorMessage = function () {
-    errorPopup.remove();
-    errorButton.removeEventListener('click', onErrorButtonClick);
-    errorButton.removeEventListener('keydown', onErrorButtonKeyPress);
-    window.backend.load(displayPins, displayErrorPopup);
-  };
-
-  var onErrorButtonClick = function () {
-    removeErrorMessage();
-  };
-
-  var onErrorButtonKeyPress = function (evt) {
-    evt.preventDefault();
-    if (evt.key === 'Escape') {
-      removeErrorMessage();
-    }
-  };
-
-  var displayErrorPopup = function (message) {
-    errorMessage.textContent = message;
-    main.appendChild(errorPopup);
-
-    errorButton.addEventListener('click', onErrorButtonClick);
-    errorButton.addEventListener('keydown', onErrorButtonKeyPress);
-    document.addEventListener('keydown', onErrorButtonKeyPress);
-  };
-
   var onFiltersContainerChange = window.debounce(function (cards) {
     window.card.closePopup();
     window.pin.setMapPins(window.filter.checkFilters(cards));
@@ -79,7 +46,7 @@
     mapPinMain.removeEventListener('keydown', window.mouse.onPinMainEnterKeydown);
     map.classList.remove('map--faded');
     window.form.activateForm();
-    window.backend.load(displayPins, displayErrorPopup);
+    window.backend.load(displayPins, window.errorPopup.displayErrorPopup);
   };
 
   var deactivateMap = function () {
@@ -108,6 +75,7 @@
   window.map = {
     deactivateMap: deactivateMap,
     pinLocations: pinLocations,
-    activateMap: activateMap
+    activateMap: activateMap,
+    displayPins: displayPins
   };
 })();
