@@ -53,7 +53,7 @@
     var minPrice = typeValue.minPrice;
     var customPrice = Number(adFormPrice.value);
 
-    var validityMessagePrice = (customPrice < minPrice) ? 'Рекомендуемая цена за ночь от ' + minPrice + ' до ' + window.constants.MAX_PRICENIGHT : '';
+    var validityMessagePrice = (customPrice < minPrice) ? 'Рекомендуемая цена за ночь от ' + minPrice + ' до ' + window.constants.adParameters.MAX_PRICENIGHT : '';
     adFormPrice.setCustomValidity(validityMessagePrice);
 
     return validityMessagePrice;
