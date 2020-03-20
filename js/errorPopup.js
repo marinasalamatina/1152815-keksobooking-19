@@ -2,20 +2,14 @@
 
 (function () {
   var main = document.querySelector('main');
-  var map = document.querySelector('.map');
   var windowPopupTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorPopup = windowPopupTemplate.cloneNode(true);
   var errorMessage = errorPopup.querySelector('.error__message');
   var errorButton = errorPopup.querySelector('.error__button');
 
   var removeErrorPopup = function () {
-    var pinsWithoutMainPin = map.querySelectorAll('.map__pin:not(.map__pin--main)');
-    if (pinsWithoutMainPin) {
-      window.backend.load(window.map.activateMap, displayErrorPopup);
-    }
     errorPopup.remove();
-    errorButton.removeEventListener('click', onErrorButtonClick);
-    errorButton.removeEventListener('keydown', onErrorButtonKeyPress);
+    document.removeEventListener('keydown', onErrorButtonKeyPress);
   };
 
   var onErrorButtonClick = function () {
