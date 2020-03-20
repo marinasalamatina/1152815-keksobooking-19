@@ -19,6 +19,7 @@
   };
 
   var onSuccessMessageKeyPress = function (evt) {
+    evt.preventDefault();
     if (evt.key === 'Escape') {
       removeSuccessMessage();
     }
