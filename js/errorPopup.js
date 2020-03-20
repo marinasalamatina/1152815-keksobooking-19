@@ -9,13 +9,13 @@
   var errorButton = errorPopup.querySelector('.error__button');
 
   var removeErrorPopup = function () {
-    errorPopup.remove();
-    errorButton.removeEventListener('click', onErrorButtonClick);
-    errorButton.removeEventListener('keydown', onErrorButtonKeyPress);
     var pinsWithoutMainPin = map.querySelectorAll('.map__pin:not(.map__pin--main)');
     if (pinsWithoutMainPin) {
       window.backend.load(window.map.activateMap, displayErrorPopup);
     }
+    errorPopup.remove();
+    errorButton.removeEventListener('click', onErrorButtonClick);
+    errorButton.removeEventListener('keydown', onErrorButtonKeyPress);
   };
 
   var onErrorButtonClick = function () {
