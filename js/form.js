@@ -40,6 +40,7 @@
     featuresAll.forEach(function (element) {
       element.checked = false;
     });
+    window.card.closePopup();
   };
 
   var onAdFormResetClick = function () {
